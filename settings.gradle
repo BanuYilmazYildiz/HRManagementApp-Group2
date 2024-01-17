@@ -1,0 +1,3 @@
+rootProject.name = 'HRManagementApp-Group2'
+include 'EmployeeMicroService'
+
