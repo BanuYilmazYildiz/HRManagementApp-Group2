@@ -1,7 +1,7 @@
 package com.bilgeadam.repository.entity;
 
+import com.bilgeadam.utility.enums.ERole;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -15,33 +15,20 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class Employee extends BaseEntity{
-
+public class User extends BaseEntity{
     @Id
     private String id;
 
     private String name;
     private String secondName;
     private String surname;
-    private String photo;
-    private Long birthDate;
-    private String birthplace;
+    private String email; //ad.soyad@bilgeadamboost.com
+    private String password;
+    private ERole role;
     private String tcNo;
+    private String company;
     private Date startDateToWork;
     private Date resignationDate; //işten çıkış tarihi
-
-    @Builder.Default
-    private boolean isActive=true;
-    private String profession; //meslek
-    private String department;
-    private String company;
-    private String email; //ad.soyad@bilgeadamboost.com
-    private String address;
-    private String phone;
-    private Double salary;
-
-
-
 
 
 
