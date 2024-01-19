@@ -2,6 +2,7 @@ package com.bilgeadam.service;
 
 import com.bilgeadam.dto.request.EmployeeUpdateRequestDto;
 import com.bilgeadam.dto.request.UserUpdateRequestDto;
+import com.bilgeadam.dto.response.EmployeeFindByUserIdResponseDto;
 import com.bilgeadam.exception.EmployeeManagerException;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.mapper.IEmployeeMapper;
@@ -26,7 +27,7 @@ public class EmployeeService extends ServiceManager<Employee,String> {
     }
 
     public Boolean updateUser(EmployeeUpdateRequestDto dto) {
-        Optional<String> userId = jwtTokenManager.getIdFromToken(dto.getToken());
+        Optional<Long> userId = jwtTokenManager.getIdFromToken(dto.getToken());
         if (userId.isEmpty()){
             throw  new EmployeeManagerException(ErrorType.INVALID_TOKEN);
         }
@@ -38,5 +39,18 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         UserUpdateRequestDto userUpdateRequestDto = IEmployeeMapper.INSTANCE.fromEmployeeToUserUpdateDto(employee.get());
         // user manager ile feign client yapılacak
         return true;
+    }
+
+    public EmployeeFindByUserIdResponseDto findOptionalById(String token) {
+        Optional<Long> userId = jwtTokenManager.getIdFromToken(token);
+        if (userId.isEmpty()){
+            throw new EmployeeManagerException(ErrorType.INVALID_TOKEN);
+        }
+        Optional<Employee> employee = employeeRepository.findOptionalByUserId(userId.get());
+        if (employee.isEmpty()){
+            throw new EmployeeManagerException(ErrorType.EMPLOYEE_NOT_FOUND);
+        }
+        EmployeeFindByUserIdResponseDto responseDto = IEmployeeMapper.INSTANCE.fromEmployeeToFindByIdDtoTo(employee.get());
+        return responseDto;
     }
 }

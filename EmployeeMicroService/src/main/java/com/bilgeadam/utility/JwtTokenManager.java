@@ -20,12 +20,12 @@ public class JwtTokenManager {
    // @Value("${jwt.issuer}")
     String issuer="java11Bilgeadam";
    // @Value("${jwt.audience}")
-    String audience="bildeadam";
+    String audience="bilgeadam";
 
     Long expiration = System.currentTimeMillis() + ( 1000L*60*30);
 
 
-    public Optional<String> createToken(String id) {
+    public Optional<String> createToken(Long userId) {
         String token = null;
         Date date = new Date(expiration);
         try {
@@ -34,7 +34,7 @@ public class JwtTokenManager {
                     .withIssuer(issuer)
                     .withIssuedAt(new Date())
                     .withExpiresAt(date)
-                    .withClaim("id", id)
+                    .withClaim("id", userId)
                     .sign(Algorithm.HMAC512(secretKey));
 
             return Optional.of(token);
@@ -44,7 +44,7 @@ public class JwtTokenManager {
         }
     }
 
-    public Optional<String> createToken(String id, ERole role) {
+    public Optional<String> createToken(Long userId, ERole role) {
         String token = null;
         Date date = new Date(expiration);
         try {
@@ -53,7 +53,7 @@ public class JwtTokenManager {
                     .withIssuer(issuer)
                     .withIssuedAt(new Date())
                     .withExpiresAt(date)
-                    .withClaim("id", id)
+                    .withClaim("id", userId)
                     .withClaim("role", role.toString())
                     .sign(Algorithm.HMAC512(secretKey));
             return Optional.of(token);
@@ -78,7 +78,7 @@ public class JwtTokenManager {
         }
     }
 
-    public Optional<String> getIdFromToken(String token) {
+    public Optional<Long> getIdFromToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC512(secretKey);
             JWTVerifier verifier = JWT.require(algorithm).withIssuer(issuer).withAudience(audience).build();
@@ -86,8 +86,8 @@ public class JwtTokenManager {
             if (decodedJWT == null) {
                 throw new EmployeeManagerException(ErrorType.INVALID_TOKEN);
             }
-            String id = decodedJWT.getClaim("id").asString();
-            return Optional.of(id);
+            Long userId = decodedJWT.getClaim("id").asLong();
+            return Optional.of(userId);
         } catch (Exception e) {
             e.getMessage();
             throw new EmployeeManagerException(ErrorType.INVALID_TOKEN);

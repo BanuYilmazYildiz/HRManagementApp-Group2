@@ -2,6 +2,7 @@ package com.bilgeadam.mapper;
 
 import com.bilgeadam.dto.request.EmployeeUpdateRequestDto;
 import com.bilgeadam.dto.request.UserUpdateRequestDto;
+import com.bilgeadam.dto.response.EmployeeFindByUserIdResponseDto;
 import com.bilgeadam.repository.entity.Employee;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -15,4 +16,6 @@ public interface IEmployeeMapper {
     UserUpdateRequestDto fromEmployeeToUserUpdateDto(Employee employee);
 
     Employee fromUpdateDtoToEmployee (EmployeeUpdateRequestDto dto);
+
+    EmployeeFindByUserIdResponseDto fromEmployeeToFindByIdDtoTo (Employee employee);
 }

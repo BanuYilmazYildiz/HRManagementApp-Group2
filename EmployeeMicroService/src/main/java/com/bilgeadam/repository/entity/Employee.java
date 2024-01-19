@@ -22,7 +22,7 @@ public class Employee extends BaseEntity{
     @Id
     private String id;
 
-    private String userId;
+    private Long userId;
 
     private String name;
     private String secondName;
