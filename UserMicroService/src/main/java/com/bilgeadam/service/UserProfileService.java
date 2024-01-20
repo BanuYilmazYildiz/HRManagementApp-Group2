@@ -1,8 +1,12 @@
 package com.bilgeadam.service;
 
 import com.bilgeadam.dto.request.LoginRequestDto;
+import com.bilgeadam.dto.request.RegisterRequestDto;
+import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.exception.UserManagerException;
+import com.bilgeadam.manager.IEmployeeManager;
+import com.bilgeadam.mapper.IUserMapper;
 import com.bilgeadam.repository.UserProfileRepository;
 import com.bilgeadam.repository.entity.UserProfile;
 import com.bilgeadam.utility.JwtTokenManager;
@@ -16,10 +20,12 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
 
     private final UserProfileRepository userRepository;
     private final JwtTokenManager jwtTokenManager;
-    public UserProfileService(UserProfileRepository userRepository, JwtTokenManager jwtTokenManager) {
+    private final IEmployeeManager employeeManager;
+    public UserProfileService(UserProfileRepository userRepository, JwtTokenManager jwtTokenManager,IEmployeeManager employeeManager) {
         super(userRepository);
         this.userRepository=userRepository;
         this.jwtTokenManager=jwtTokenManager;
+        this.employeeManager=employeeManager;
     }
 
     public String login(LoginRequestDto dto) {
@@ -33,5 +39,12 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
         }
         return token.get();
 
+    }
+
+    public RegisterResponseDto register(RegisterRequestDto dto) {
+        UserProfile userProfile = IUserMapper.INSTANCE.fromUserRegisterRequestDtoToUser(dto);
+        save(userProfile);
+        employeeManager.createEmployee(IUserMapper.INSTANCE.fromUserToEmployeeCreateRequestDto(userProfile));
+        return IUserMapper.INSTANCE.fromUserToRegisterResponseDto(userProfile);
     }
 }

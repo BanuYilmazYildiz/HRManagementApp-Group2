@@ -1,5 +1,6 @@
 package com.bilgeadam.service;
 
+import com.bilgeadam.dto.request.EmployeeCreateRequestDto;
 import com.bilgeadam.dto.request.EmployeeUpdateRequestDto;
 import com.bilgeadam.dto.request.UserUpdateRequestDto;
 import com.bilgeadam.dto.response.EmployeeFindByUserIdResponseDto;
@@ -52,5 +53,13 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         }
         EmployeeFindByUserIdResponseDto responseDto = IEmployeeMapper.INSTANCE.fromEmployeeToFindByIdDtoTo(employee.get());
         return responseDto;
+    }
+    public Boolean createUser(EmployeeCreateRequestDto dto) {
+        try {
+            save(IEmployeeMapper.INSTANCE.fromCreateRequestToEmployee(dto));
+            return true;
+        } catch (Exception e){
+            throw new EmployeeManagerException(ErrorType.EMPLOYEE_NOT_CREATED);
+        }
     }
 }
