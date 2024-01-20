@@ -6,5 +6,6 @@ public class RestApi {
     public static final String EMPLYOYEE = VERSION + "/employee";
 
     public static final String UPDATE_EMPLOYEE = "/update-employee";
-    public static final String FINDBYID = "/find-by-id";
+    public static final String FINDBYID = "/find-by-id/{authId}";
+    public static final String CREATE = "/create";
 }

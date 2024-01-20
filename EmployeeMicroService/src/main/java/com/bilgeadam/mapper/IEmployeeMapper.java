@@ -1,5 +1,6 @@
 package com.bilgeadam.mapper;
 
+import com.bilgeadam.dto.request.EmployeeCreateRequestDto;
 import com.bilgeadam.dto.request.EmployeeUpdateRequestDto;
 import com.bilgeadam.dto.request.UserUpdateRequestDto;
 import com.bilgeadam.dto.response.EmployeeFindByUserIdResponseDto;
@@ -18,4 +19,5 @@ public interface IEmployeeMapper {
     Employee fromUpdateDtoToEmployee (EmployeeUpdateRequestDto dto);
 
     EmployeeFindByUserIdResponseDto fromEmployeeToFindByIdDtoTo (Employee employee);
+    Employee fromCreateRequestToEmployee(EmployeeCreateRequestDto dto);
 }

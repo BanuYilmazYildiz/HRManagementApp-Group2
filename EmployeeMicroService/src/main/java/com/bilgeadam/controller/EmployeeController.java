@@ -1,5 +1,6 @@
 package com.bilgeadam.controller;
 
+import com.bilgeadam.dto.request.EmployeeCreateRequestDto;
 import com.bilgeadam.dto.request.EmployeeUpdateRequestDto;
 import com.bilgeadam.dto.response.EmployeeFindByUserIdResponseDto;
 import com.bilgeadam.service.EmployeeService;
@@ -22,8 +23,14 @@ public class EmployeeController {
     }
 
     @GetMapping(FINDBYID)
-    public ResponseEntity<EmployeeFindByUserIdResponseDto> findById(@RequestBody String token){
+    @CrossOrigin("*")
+    public ResponseEntity<EmployeeFindByUserIdResponseDto> findById(@RequestParam String token){
         return ResponseEntity.ok(employeeService.findOptionalById(token));
     }
+    @PostMapping(CREATE)
+    public ResponseEntity<Boolean> createEmployee(@RequestBody EmployeeCreateRequestDto dto){
+        return ResponseEntity.ok(employeeService.createUser(dto));
+    }
+
 
 }
