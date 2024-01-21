@@ -62,4 +62,13 @@ public class EmployeeService extends ServiceManager<Employee,String> {
             throw new EmployeeManagerException(ErrorType.EMPLOYEE_NOT_CREATED);
         }
     }
+
+    public EmployeeFindByUserIdResponseDto findEmployee2(Long userId) {
+        Optional<Employee> employee = employeeRepository.findOptionalByUserId(userId);
+        if (employee.isEmpty()){
+            throw new EmployeeManagerException(ErrorType.EMPLOYEE_NOT_FOUND);
+        }
+        EmployeeFindByUserIdResponseDto responseDto = IEmployeeMapper.INSTANCE.fromEmployeeToFindByIdDtoTo(employee.get());
+        return responseDto;
+    }
 }
