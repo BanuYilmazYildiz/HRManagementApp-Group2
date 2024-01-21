@@ -27,6 +27,12 @@ public class EmployeeController {
     public ResponseEntity<EmployeeFindByUserIdResponseDto> findById(@RequestParam String token){
         return ResponseEntity.ok(employeeService.findOptionalById(token));
     }
+
+    @GetMapping(FINDBYID2)
+    public ResponseEntity<EmployeeFindByUserIdResponseDto> findByUserDto(@PathVariable Long userId){
+        return ResponseEntity.ok(employeeService.findEmployee2(userId));
+    }
+
     @PostMapping(CREATE)
     public ResponseEntity<Boolean> createEmployee(@RequestBody EmployeeCreateRequestDto dto){
         return ResponseEntity.ok(employeeService.createUser(dto));
