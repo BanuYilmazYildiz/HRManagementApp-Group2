@@ -29,6 +29,7 @@ public class EmployeeController {
     }
 
     @GetMapping(FINDBYID2)
+    @CrossOrigin("*")
     public ResponseEntity<EmployeeFindByUserIdResponseDto> findByUserDto(@PathVariable Long userId){
         return ResponseEntity.ok(employeeService.findEmployee2(userId));
     }
