@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -31,8 +32,9 @@ public class UserProfile extends BaseEntity{
     private ERole role;
     private String tcNo;
     private String company;
-    private Date startDateToWork;
-    private Date resignationDate; //işten çıkış tarihi
+    private LocalDate startDateToWork;
+    private LocalDate resignationDate; //işten çıkış tarihi
+    private String photo;
 
 
 
