@@ -2,4 +2,5 @@ rootProject.name = 'HRManagementApp-Group2'
 include 'EmployeeMicroService'
 include 'UserMicroService'
 include 'ConfigServer'
+include 'ManagerMicroService'
 

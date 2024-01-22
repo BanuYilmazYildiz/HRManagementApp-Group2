@@ -3,7 +3,7 @@ package com.bilgeadam.controller;
 import com.bilgeadam.dto.request.EmployeeCreateRequestDto;
 import com.bilgeadam.dto.request.EmployeeUpdateRequestDto;
 import com.bilgeadam.dto.response.EmployeeFindByUserIdDetailResponseDto;
-import com.bilgeadam.dto.response.EmployeeFindByUserIdResponseDto;
+
 import com.bilgeadam.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
