@@ -23,6 +23,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @PutMapping(UPDATE_EMPLOYEE)
+    @CrossOrigin("*")
     public ResponseEntity<Boolean> updateUser( @RequestBody EmployeeUpdateRequestDto dto){
         return ResponseEntity.ok(employeeService.updateUser( dto));
     }
@@ -44,7 +45,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.createUser(dto));
     }
 
-    @CrossOrigin("*")
+   @CrossOrigin("*")
     @PostMapping(IMAGE_UPLOAD)
     public ResponseEntity<String> updateImage(@RequestParam("file") MultipartFile file, @RequestParam("token") String token) throws IOException {
         return ResponseEntity.ok(employeeService.updateImage(file,token));
