@@ -1,5 +1,6 @@
 package com.bilgeadam.repository.entity;
 
+import com.bilgeadam.utility.enums.EActivation;
 import com.bilgeadam.utility.enums.ERole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +36,7 @@ public class Employee extends BaseEntity{
     private LocalDate resignationDate; //işten çıkış tarihi
 
     @Builder.Default
-    private boolean isActive=true;
+    private EActivation activation = EActivation.WORKING;
     private String profession; //meslek
     private String department;
     private String company;

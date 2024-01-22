@@ -1,8 +1,6 @@
-package com.bilgeadam.dto.request;
+package com.bilgeadam.dto.response;
 
 import com.bilgeadam.utility.enums.ERole;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,13 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RegisterRequestDto {
-
+public class EmployeeFindByUserIdDetailResponseDto {
 
     private String name;
     private String secondName;
@@ -34,7 +30,5 @@ public class RegisterRequestDto {
     private String address;
     private String phone;
     private Double salary;
-    @Enumerated(EnumType.STRING)
     private ERole role;
-    private String password;
 }
