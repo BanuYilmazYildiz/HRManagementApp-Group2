@@ -45,9 +45,10 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         if (employee.isEmpty()){
             throw new EmployeeManagerException(ErrorType.BAD_REQUEST); //TODO
         }
-        update(IEmployeeMapper.INSTANCE.fromUpdateDtoToEmployee(dto));
-        UserUpdateRequestDto userUpdateRequestDto = IEmployeeMapper.INSTANCE.fromEmployeeToUserUpdateDto(employee.get());
-        // user manager ile feign client yapılacak
+        employee.get().setPhone(dto.getPhone());
+        employee.get().setAddress(dto.getAddress());
+
+        //UserUpdateRequestDto userUpdateRequestDto = IEmployeeMapper.INSTANCE.fromEmployeeToUserUpdateDto(employee.get());
         return true;
     }
 
