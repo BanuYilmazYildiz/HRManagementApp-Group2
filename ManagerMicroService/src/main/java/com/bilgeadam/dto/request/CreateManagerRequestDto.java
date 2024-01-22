@@ -1,29 +1,20 @@
-package com.bilgeadam.repository.entity;
+package com.bilgeadam.dto.request;
 
-import com.bilgeadam.utility.enums.EActivation;
 import com.bilgeadam.utility.enums.ERole;
 import lombok.AllArgsConstructor;
-
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 
-@Data
-@SuperBuilder
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-@Document
-public class Manager extends BaseEntity{
-    @Id
-    private String id;
+@NoArgsConstructor
+@Data
+public class CreateManagerRequestDto {
 
     private Long userId;
-
     private String name;
     private String secondName;
     private String surname;
@@ -33,13 +24,10 @@ public class Manager extends BaseEntity{
     private String tcNo;
     private LocalDate startDateToWork;
     private LocalDate resignationDate; //işten çıkış tarihi
-
-    @Builder.Default
-    private EActivation activation = EActivation.WORKING;
-    private String profession;
+    private String profession; //meslek
     private String department;
     private String company;
-    private String email;
+    private String email; //ad.soyad@bilgeadamboost.com
     private String address;
     private String phone;
     private Double salary;

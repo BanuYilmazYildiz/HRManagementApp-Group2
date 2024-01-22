@@ -1,5 +1,9 @@
 package com.bilgeadam.service;
 
+import com.bilgeadam.dto.request.CreateManagerRequestDto;
+import com.bilgeadam.exception.ErrorType;
+import com.bilgeadam.exception.ManagerManagerException;
+import com.bilgeadam.mapper.IManagerMapper;
 import com.bilgeadam.repository.IManagerRepository;
 import com.bilgeadam.repository.entity.Manager;
 import com.bilgeadam.utility.ServiceManager;
@@ -16,5 +20,12 @@ public class ManagerService extends ServiceManager<Manager,String> {
     }
 
 
-
+    public Boolean createManager(CreateManagerRequestDto dto) {
+        try {
+            save(IManagerMapper.INSTANCE.fromCreateRequestToManager(dto));
+            return true;
+        } catch (Exception e){
+            throw  new ManagerManagerException(ErrorType.MANAGER_NOT_CREATED);
+        }
+    }
 }

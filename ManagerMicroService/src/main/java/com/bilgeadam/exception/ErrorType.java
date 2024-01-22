@@ -16,8 +16,9 @@ public enum ErrorType {
     INVALID_TOKEN(4114,"Gecersiz token" ,HttpStatus.BAD_REQUEST),
 
     //    ACCOUNT_NOT_ACTIVE(4116,"Hesabınız aktif edilmemiştir. Lütfen hesabınızı aktif hale getiriniz..." , HttpStatus.FORBIDDEN),
-    EMPLOYEE_NOT_CREATED(4117,"Employee profili olusturulamadi...",HttpStatus.BAD_REQUEST);
+    EMPLOYEE_NOT_CREATED(4117,"Employee profili olusturulamadi...",HttpStatus.BAD_REQUEST),
     //    ROLE_NOT_FOUND(4118,"Boyle bir kullanici rolu bulunmamaktadir..." ,HttpStatus.BAD_REQUEST );
+    MANAGER_NOT_CREATED(4118,"Manager olusturulamadi",HttpStatus.BAD_REQUEST);
 
     private int code;
     private String message;
