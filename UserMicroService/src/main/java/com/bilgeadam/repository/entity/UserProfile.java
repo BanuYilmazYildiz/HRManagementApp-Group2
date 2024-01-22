@@ -36,6 +36,14 @@ public class UserProfile extends BaseEntity{
     private LocalDate resignationDate; //işten çıkış tarihi
     private String photo;
 
+    private LocalDate birthday;
+    private String birthplace;
+    private String profession; //meslek
+    private String department;
+    private String address;
+    private String phone;
+    private Double salary;
+
 
 
 
