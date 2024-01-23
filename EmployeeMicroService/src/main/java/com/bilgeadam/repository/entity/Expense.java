@@ -1,7 +1,6 @@
 package com.bilgeadam.repository.entity;
 
 import com.bilgeadam.utility.enums.EApprovalStatus;
-import com.bilgeadam.utility.enums.EPermissionType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,19 +15,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class Permission extends BaseEntity{
-
+public class Expense {
     @Id
     private String id;
     private Long userId;//String employeeId
-//  private String nameEmployee;
-//  private String surnameEmployee;
-    private EPermissionType permissionType;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private LocalDate dateOfRequest;
-    private int days;
-    private EApprovalStatus approvalStatus;
-    private LocalDate replyDate;
-
+    private String name;
+    private String surname;
+    private EExpenseType expenseType; // Harcama türü
+    private Double expenseAmount; // Harcama tutarı
+    private ECurrency currency; // para birimi
+    private EApprovalStatus approvalStatus; // onay durumu
+    private LocalDate dateOfRequest; //talep tarihi
+    private LocalDate dateOfResponse; // cevaplama tarihi
+    private MultipartFile expenseField; // eklenecek dosya
 }
