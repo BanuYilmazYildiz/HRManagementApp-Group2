@@ -1,5 +1,6 @@
 package com.bilgeadam.controller;
 
+import com.bilgeadam.dto.request.CreatePermissionRequestDto;
 import com.bilgeadam.dto.request.EmployeeCreateRequestDto;
 import com.bilgeadam.dto.request.EmployeeUpdateRequestDto;
 import com.bilgeadam.dto.response.EmployeeFindByUserIdDetailResponseDto;
@@ -21,6 +22,7 @@ import static com.bilgeadam.constants.RestApi.FINDBYIDDETAIL;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+
 
     @PutMapping(UPDATE_EMPLOYEE)
     @CrossOrigin("*")
@@ -50,6 +52,18 @@ public class EmployeeController {
     public ResponseEntity<String> updateImage(@RequestParam("file") MultipartFile file, @RequestParam("token") String token) throws IOException {
         return ResponseEntity.ok(employeeService.updateImage(file,token));
     }
+
+    @PostMapping(PERMISSION_CREATE)
+    @CrossOrigin("*")
+    public ResponseEntity<?> createPermission(@RequestBody CreatePermissionRequestDto dto){
+        return ResponseEntity.ok(employeeService.createPermission(dto));
+    }
+
+//    @CrossOrigin("*")
+//    @PutMapping(PERMISSION_APPROVE)
+//    public ResponseEntity<Boolean> updateStatusPermission(@RequestBody UpdateStatusRequestDto dto){
+//        return ResponseEntity.ok(employeeService.updateStatusPermission(dto));
+//    }
 
 
 }

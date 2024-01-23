@@ -1,6 +1,6 @@
 package com.bilgeadam.repository.entity;
 
-import com.bilgeadam.utility.enums.EActivation;
+import com.bilgeadam.utility.enums.EPermissionType;
 import com.bilgeadam.utility.enums.ERole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @SuperBuilder
@@ -24,7 +23,6 @@ public class Employee extends BaseEntity{
     private String id;
 
     private Long userId;
-
     private String name;
     private String secondName;
     private String surname;
@@ -36,7 +34,7 @@ public class Employee extends BaseEntity{
     private LocalDate resignationDate; //işten çıkış tarihi
 
     @Builder.Default
-    private EActivation activation = EActivation.WORKING;
+    private EPermissionType activation = EPermissionType.WORKING;
     private String profession; //meslek
     private String department;
     private String company;
