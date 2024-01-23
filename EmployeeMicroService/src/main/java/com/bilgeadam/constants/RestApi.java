@@ -10,4 +10,7 @@ public class RestApi {
     public static final String FINDBYID2 = "/find-by-id2/{userId}";
     public static final String CREATE = "/create";
     public static final String IMAGE_UPLOAD = "/image-upload";
+    public static final String PERMISSION_CREATE =  "/permission-create";
+    public static final String PERMISSION_APPROVE = "/permission-approve";
+
 }
