@@ -59,11 +59,11 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.createPermission(dto));
     }
 
-    @CrossOrigin("*")
-    @PutMapping(PERMISSION_APPROVE)
-    public ResponseEntity<Boolean> updateStatusPermission(@RequestBody UpdateStatusRequestDto dto){
-        return ResponseEntity.ok(employeeService.updateStatusPermission(dto));
-    }
+//    @CrossOrigin("*")
+//    @PutMapping(PERMISSION_APPROVE)
+//    public ResponseEntity<Boolean> updateStatusPermission(@RequestBody UpdateStatusRequestDto dto){
+//        return ResponseEntity.ok(employeeService.updateStatusPermission(dto));
+//    }
 
 
 }
