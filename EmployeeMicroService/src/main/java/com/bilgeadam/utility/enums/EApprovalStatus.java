@@ -1,6 +1,6 @@
 package com.bilgeadam.utility.enums;
 
-public enum EApproval {
+public enum EApprovalStatus {
     APPROVED,
     PENDING_APPROVAL,
     REJECTED

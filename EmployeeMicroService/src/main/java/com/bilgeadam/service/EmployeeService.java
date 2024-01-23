@@ -4,6 +4,7 @@ import com.bilgeadam.config.CloudinaryConfig;
 import com.bilgeadam.dto.request.CreatePermissionRequestDto;
 import com.bilgeadam.dto.request.EmployeeCreateRequestDto;
 import com.bilgeadam.dto.request.EmployeeUpdateRequestDto;
+import com.bilgeadam.dto.request.UpdateStatusRequestDto;
 import com.bilgeadam.dto.response.EmployeeFindByUserIdDetailResponseDto;
 import com.bilgeadam.exception.EmployeeManagerException;
 import com.bilgeadam.exception.ErrorType;
@@ -141,5 +142,6 @@ public class EmployeeService extends ServiceManager<Employee,String> {
     }
 
 //    public Object updateStatusPermission(UpdateStatusRequestDto dto) {
+//        return 0;
 //    }
 }
