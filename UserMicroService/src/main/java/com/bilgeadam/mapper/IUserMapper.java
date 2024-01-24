@@ -1,5 +1,6 @@
 package com.bilgeadam.mapper;
 
+import com.bilgeadam.dto.request.CreateManagerRequestDto;
 import com.bilgeadam.dto.request.EmployeeCreateRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
@@ -18,6 +19,8 @@ public interface IUserMapper {
 
     @Mapping(source ="id" ,target = "userId")
     EmployeeCreateRequestDto fromUserToEmployeeCreateRequestDto(UserProfile userProfile);
+    @Mapping(source = "id",target = "userId")
+    CreateManagerRequestDto fromUserToCreateManagerRequestDto(UserProfile userProfile);
 
     RegisterResponseDto fromUserToRegisterResponseDto(UserProfile userProfile);
 }
