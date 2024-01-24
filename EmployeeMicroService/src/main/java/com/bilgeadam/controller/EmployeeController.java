@@ -1,6 +1,10 @@
 package com.bilgeadam.controller;
 
+
 import com.bilgeadam.dto.request.*;
+
+
+
 import com.bilgeadam.dto.response.EmployeeFindByUserIdDetailResponseDto;
 
 import com.bilgeadam.service.EmployeeService;
@@ -60,11 +64,11 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.createPermission(dto));
     }
 
-//    @CrossOrigin("*")
-//    @PutMapping(PERMISSION_APPROVE)
-//    public ResponseEntity<Boolean> updateStatusPermission(@RequestBody UpdateStatusRequestDto dto){
-//        return ResponseEntity.ok(employeeService.updateStatusPermission(dto));
-//    }
+    @CrossOrigin("*")
+    @PutMapping(PERMISSION_APPROVE)
+    public ResponseEntity<Boolean> updateStatusPermission(@RequestBody UpdateStatusRequestDto dto){
+        return ResponseEntity.ok(employeeService.updateStatusPermission(dto));
+    }
 
 
     @PostMapping(EXPENSE_CREATE)

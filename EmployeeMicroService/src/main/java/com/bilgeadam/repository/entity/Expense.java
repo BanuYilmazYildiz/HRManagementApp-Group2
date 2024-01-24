@@ -1,3 +1,4 @@
+
 package com.bilgeadam.repository.entity;
 
 import com.bilgeadam.utility.enums.EApprovalStatus;
@@ -34,3 +35,4 @@ public class Expense {
     private LocalDate dateOfResponse; // cevaplama tarihi
    // private MultipartFile expenseField; // eklenecek dosya. TODO: MONGO DB MULTİPART FİLE TUTMUYOR
 }
+

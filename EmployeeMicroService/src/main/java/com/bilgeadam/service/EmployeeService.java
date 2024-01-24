@@ -21,6 +21,7 @@ import com.cloudinary.utils.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -152,6 +153,7 @@ public class EmployeeService extends ServiceManager<Employee,String> {
 
 
 
+
 //    public Object updateStatusPermission(UpdateStatusRequestDto dto) {
 //        return 0;
 //    }
@@ -173,6 +175,19 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         return true;
     }
 
+
+
+
+    public Boolean updateStatusPermission(UpdateStatusRequestDto dto) {
+        Optional<Permission> permission = permissionRepository.findById(dto.getId());
+        if (permission.isEmpty()){
+            throw new EmployeeManagerException(ErrorType.REQUEST_NOT_FOUND);
+        }
+        permission.get().setApprovalStatus(dto.getApprovalStatus());
+        permission.get().setReplyDate(LocalDate.now());
+        permissionRepository.save(permission.get());
+        return true;
+    }
 
 
 }
