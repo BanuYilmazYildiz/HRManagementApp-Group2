@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 import static com.bilgeadam.constants.RestApi.*;
-import static com.bilgeadam.constants.RestApi.FINDBYIDDETAIL;
+import static com.bilgeadam.constants.RestApi.ADVANCE_APPROVE;
 
 @RestController
 @RequiredArgsConstructor
@@ -75,6 +75,17 @@ public class EmployeeController {
     @CrossOrigin("*")
     public ResponseEntity<Boolean> createExpense(@RequestBody CreateExpenseRequestDto dto){
         return ResponseEntity.ok(employeeService.createExpense(dto));
+    }
+
+    @PostMapping(CREATE_ADVANCE)
+    public ResponseEntity<?> createAdvance(@RequestBody CreateAdvanceRequestDto dto){
+        return ResponseEntity.ok(employeeService.createAdvance(dto));
+    }
+
+    @CrossOrigin("*")
+    @PutMapping(ADVANCE_APPROVE)
+    public ResponseEntity<Boolean> updateStatusAdvance(@RequestBody UpdateStatusRequestDto dto){
+        return ResponseEntity.ok(employeeService.updateStatusAdvance(dto));
     }
 
 

@@ -11,7 +11,9 @@ import com.bilgeadam.mapper.IExpenseMapper;
 import com.bilgeadam.mapper.IPermissionMapper;
 import com.bilgeadam.repository.EmployeeRepository;
 import com.bilgeadam.repository.ExpenseRepository;
+import com.bilgeadam.repository.IAdvanceRepository;
 import com.bilgeadam.repository.PermissionRepository;
+import com.bilgeadam.repository.entity.Advance;
 import com.bilgeadam.repository.entity.Employee;
 import com.bilgeadam.repository.entity.Expense;
 import com.bilgeadam.repository.entity.Permission;
@@ -32,15 +34,17 @@ public class EmployeeService extends ServiceManager<Employee,String> {
 
     private final EmployeeRepository employeeRepository;
     private final PermissionRepository permissionRepository;
+    private final IAdvanceRepository advanceRepository;
     private final JwtTokenManager jwtTokenManager;
     private final CloudinaryConfig cloudinaryConfig;
 
     private final ExpenseRepository expenseRepository;
 
-    public EmployeeService(EmployeeRepository employeeRepository, PermissionRepository permissionRepository, JwtTokenManager jwtTokenManager, CloudinaryConfig cloudinaryConfig, ExpenseRepository expenseRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, PermissionRepository permissionRepository, IAdvanceRepository advanceRepository, JwtTokenManager jwtTokenManager, CloudinaryConfig cloudinaryConfig, ExpenseRepository expenseRepository) {
         super(employeeRepository);
         this.employeeRepository=employeeRepository;
         this.permissionRepository = permissionRepository;
+        this.advanceRepository = advanceRepository;
         this.jwtTokenManager=jwtTokenManager;
         this.cloudinaryConfig = cloudinaryConfig;
         this.expenseRepository = expenseRepository;
@@ -187,6 +191,29 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         permission.get().setApprovalStatus(dto.getApprovalStatus());
         permission.get().setReplyDate(LocalDate.now());
         permissionRepository.save(permission.get());
+        return true;
+    }
+
+    public Boolean createAdvance(CreateAdvanceRequestDto dto) {
+        Optional<Long> userId = jwtTokenManager.getIdFromToken(dto.getToken());
+        if (userId.isEmpty()) throw new EmployeeManagerException(ErrorType.INVALID_TOKEN);
+        Optional<Employee> employee = employeeRepository.findOptionalByUserId(userId.get());
+        if (employee.isEmpty()){
+            throw new EmployeeManagerException(ErrorType.EMPLOYEE_NOT_CREATED);
+        }
+        Advance advance = IAdvanceMapper.INSTANCE.fromCreateAdvanceRequestDtoToAdvance(dto);
+        advanceRepository.save(advance);
+        return  true;
+    }
+
+    public Boolean updateStatusAdvance(UpdateStatusRequestDto dto) {
+        Optional<Advance> advance = advanceRepository.findById(dto.getId());
+        if (advance.isEmpty()){
+            throw new EmployeeManagerException(ErrorType.REQUEST_NOT_FOUND);
+        }
+        advance.get().setApprovalStatus(dto.getApprovalStatus());
+        advance.get().setReplyDate(LocalDate.now());
+        advanceRepository.save(advance.get());
         return true;
     }
 
