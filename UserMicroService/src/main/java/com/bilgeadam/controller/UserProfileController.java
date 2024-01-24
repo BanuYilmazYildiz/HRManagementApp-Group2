@@ -14,6 +14,7 @@ import static com.bilgeadam.constants.RestApi.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(USER)
+@CrossOrigin("*")
 public class UserProfileController {
     private final UserProfileService userProfileService;
 

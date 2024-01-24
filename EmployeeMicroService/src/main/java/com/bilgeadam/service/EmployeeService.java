@@ -1,18 +1,18 @@
 package com.bilgeadam.service;
 
 import com.bilgeadam.config.CloudinaryConfig;
-import com.bilgeadam.dto.request.CreatePermissionRequestDto;
-import com.bilgeadam.dto.request.EmployeeCreateRequestDto;
-import com.bilgeadam.dto.request.EmployeeUpdateRequestDto;
-import com.bilgeadam.dto.request.UpdateStatusRequestDto;
+import com.bilgeadam.dto.request.*;
 import com.bilgeadam.dto.response.EmployeeFindByUserIdDetailResponseDto;
 import com.bilgeadam.exception.EmployeeManagerException;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.mapper.IEmployeeMapper;
+import com.bilgeadam.mapper.IExpenseMapper;
 import com.bilgeadam.mapper.IPermissionMapper;
 import com.bilgeadam.repository.EmployeeRepository;
+import com.bilgeadam.repository.ExpenseRepository;
 import com.bilgeadam.repository.PermissionRepository;
 import com.bilgeadam.repository.entity.Employee;
+import com.bilgeadam.repository.entity.Expense;
 import com.bilgeadam.repository.entity.Permission;
 import com.bilgeadam.utility.JwtTokenManager;
 import com.bilgeadam.utility.ServiceManager;
@@ -33,12 +33,15 @@ public class EmployeeService extends ServiceManager<Employee,String> {
     private final JwtTokenManager jwtTokenManager;
     private final CloudinaryConfig cloudinaryConfig;
 
-    public EmployeeService(EmployeeRepository employeeRepository, PermissionRepository permissionRepository, JwtTokenManager jwtTokenManager, CloudinaryConfig cloudinaryConfig) {
+    private final ExpenseRepository expenseRepository;
+
+    public EmployeeService(EmployeeRepository employeeRepository, PermissionRepository permissionRepository, JwtTokenManager jwtTokenManager, CloudinaryConfig cloudinaryConfig, ExpenseRepository expenseRepository) {
         super(employeeRepository);
         this.employeeRepository=employeeRepository;
         this.permissionRepository = permissionRepository;
         this.jwtTokenManager=jwtTokenManager;
         this.cloudinaryConfig = cloudinaryConfig;
+        this.expenseRepository = expenseRepository;
     }
 
     public Boolean updateUser(EmployeeUpdateRequestDto dto) {
@@ -48,10 +51,11 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         }
         Optional<Employee> employee = employeeRepository.findOptionalByUserId(userId.get());
         if (employee.isEmpty()){
-            throw new EmployeeManagerException(ErrorType.BAD_REQUEST); //TODO
+            throw new EmployeeManagerException(ErrorType.BAD_REQUEST);
         }
         employee.get().setPhone(dto.getPhone());
         employee.get().setAddress(dto.getAddress());
+        update(employee.get());
 
         //UserUpdateRequestDto userUpdateRequestDto = IEmployeeMapper.INSTANCE.fromEmployeeToUserUpdateDto(employee.get());
         return true;
@@ -108,14 +112,19 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         }
     }
 
-    public String updateImage(MultipartFile file, String token) {
-        Long userId = jwtTokenManager.getIdFromToken(token).get();
-        Optional<Employee> user = employeeRepository.findOptionalByUserId(userId);
-        if (user.isEmpty()){
+    public Boolean updateImage(ImageUploadRequestDto dto) {
+        Optional<Long> userId = jwtTokenManager.getIdFromToken(dto.getToken());
+        if(userId.isEmpty()){
+            throw new EmployeeManagerException(ErrorType.INVALID_TOKEN);
+        }
+        Optional<Employee> employee = employeeRepository.findOptionalByUserId(userId.get());
+        if (employee.isEmpty()){
             throw new EmployeeManagerException(ErrorType.EMPLOYEE_NOT_FOUND);
         }
-        String url = imageUpload(file);
-        return url;
+        String url = imageUpload(dto.getPhoto());
+        employee.get().setPhoto(url);
+        update(employee.get());
+        return true;
     }
 
     public Boolean createPermission(CreatePermissionRequestDto dto){
@@ -141,7 +150,29 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         return true;
     }
 
+
+
 //    public Object updateStatusPermission(UpdateStatusRequestDto dto) {
 //        return 0;
 //    }
+
+    public Boolean createExpense(CreateExpenseRequestDto dto) {
+        Optional<Long> userId = jwtTokenManager.getIdFromToken(dto.getToken());
+        if (userId.isEmpty()){
+            throw new EmployeeManagerException(ErrorType.INVALID_TOKEN);
+        }
+        Optional<Employee> employee = employeeRepository.findOptionalByUserId(userId.get());
+        if (employee.isEmpty()){
+            throw new EmployeeManagerException(ErrorType.EMPLOYEE_NOT_FOUND);
+        }
+        Expense expense = IExpenseMapper.INSTANCE.fromCreateManagerExceptionDtoToExpense(dto);
+        expense.setUserId(userId.get());
+        expense.setName(employee.get().getName());
+        expense.setSurname(employee.get().getSurname());
+        expenseRepository.save(expense);
+        return true;
+    }
+
+
+
 }

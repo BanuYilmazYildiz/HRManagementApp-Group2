@@ -1,12 +1,12 @@
 package com.bilgeadam.controller;
 
-import com.bilgeadam.dto.request.CreatePermissionRequestDto;
-import com.bilgeadam.dto.request.EmployeeCreateRequestDto;
-import com.bilgeadam.dto.request.EmployeeUpdateRequestDto;
+import com.bilgeadam.dto.request.*;
 import com.bilgeadam.dto.response.EmployeeFindByUserIdDetailResponseDto;
 
 import com.bilgeadam.service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +19,7 @@ import static com.bilgeadam.constants.RestApi.FINDBYIDDETAIL;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(EMPLYOYEE)
+@CrossOrigin("*")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -48,9 +49,9 @@ public class EmployeeController {
     }
 
    @CrossOrigin("*")
-    @PostMapping(IMAGE_UPLOAD)
-    public ResponseEntity<String> updateImage(@RequestParam("file") MultipartFile file, @RequestParam("token") String token) throws IOException {
-        return ResponseEntity.ok(employeeService.updateImage(file,token));
+   @PostMapping(value = IMAGE_UPLOAD,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Boolean> updateImage(@RequestBody @Valid @ModelAttribute ImageUploadRequestDto dto)  {
+        return ResponseEntity.ok(employeeService.updateImage(dto));
     }
 
     @PostMapping(PERMISSION_CREATE)
@@ -64,6 +65,13 @@ public class EmployeeController {
 //    public ResponseEntity<Boolean> updateStatusPermission(@RequestBody UpdateStatusRequestDto dto){
 //        return ResponseEntity.ok(employeeService.updateStatusPermission(dto));
 //    }
+
+
+    @PostMapping(EXPENSE_CREATE)
+    @CrossOrigin("*")
+    public ResponseEntity<Boolean> createExpense(@RequestBody CreateExpenseRequestDto dto){
+        return ResponseEntity.ok(employeeService.createExpense(dto));
+    }
 
 
 }

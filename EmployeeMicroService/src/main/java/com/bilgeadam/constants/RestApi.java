@@ -12,5 +12,6 @@ public class RestApi {
     public static final String IMAGE_UPLOAD = "/image-upload";
     public static final String PERMISSION_CREATE =  "/permission-create";
     public static final String PERMISSION_APPROVE = "/permission-approve";
+    public static final String EXPENSE_CREATE = "/expense-create";
 
 }
