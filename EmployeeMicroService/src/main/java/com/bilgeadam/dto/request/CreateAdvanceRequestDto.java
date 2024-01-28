@@ -1,5 +1,6 @@
 package com.bilgeadam.dto.request;
 
+import com.bilgeadam.utility.enums.EAdvanceAmount;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 public class CreateAdvanceRequestDto {
 
     String token;
-    Double amountOfRequest;
+    private EAdvanceAmount amountOfRequest;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     LocalDate dateOfRequest;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

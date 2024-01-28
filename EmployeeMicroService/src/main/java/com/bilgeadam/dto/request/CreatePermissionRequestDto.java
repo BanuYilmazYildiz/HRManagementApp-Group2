@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Data
 public class CreatePermissionRequestDto {
     String token;
-    EPermissionType ePermissionType;
+    private EPermissionType permissionType;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     //ISO 8601 formatı, "yyyy-MM-dd" şeklinde tarihleri temsil etmek için geniş bir şekilde kabul edilen bir standarttır.
     LocalDate startDate;

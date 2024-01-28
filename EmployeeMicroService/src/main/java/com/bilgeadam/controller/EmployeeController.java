@@ -4,9 +4,11 @@ package com.bilgeadam.controller;
 import com.bilgeadam.dto.request.*;
 
 
-
+import com.bilgeadam.dto.response.AdvanceResponseDto;
 import com.bilgeadam.dto.response.EmployeeFindByUserIdDetailResponseDto;
 
+import com.bilgeadam.dto.response.ExpenseResponseDto;
+import com.bilgeadam.dto.response.PermissionResponseDto;
 import com.bilgeadam.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.bilgeadam.constants.RestApi.*;
 import static com.bilgeadam.constants.RestApi.ADVANCE_APPROVE;
@@ -65,6 +68,12 @@ public class EmployeeController {
     }
 
     @CrossOrigin("*")
+    @GetMapping(FIND_ALL_PERMISSION)
+    public ResponseEntity<List<PermissionResponseDto>> findAllPermission(String token){
+        return ResponseEntity.ok(employeeService.findAllPermission(token));
+    }
+
+    @CrossOrigin("*")
     @PutMapping(PERMISSION_APPROVE)
     public ResponseEntity<Boolean> updateStatusPermission(@RequestBody UpdateStatusRequestDto dto){
         return ResponseEntity.ok(employeeService.updateStatusPermission(dto));
@@ -77,16 +86,33 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.createExpense(dto));
     }
 
+
+
+    @CrossOrigin("*")
+    @GetMapping(FIND_ALL_EXPENSE)
+    public ResponseEntity<List<ExpenseResponseDto>> findAllExpense(String token){
+        return ResponseEntity.ok(employeeService.findAllExpensestoken(token));
+    }
     @PostMapping(CREATE_ADVANCE)
+    @CrossOrigin("*")
     public ResponseEntity<?> createAdvance(@RequestBody CreateAdvanceRequestDto dto){
         return ResponseEntity.ok(employeeService.createAdvance(dto));
     }
+
+    @CrossOrigin("*")
+    @GetMapping(FIND_ALL_ADVANCE)
+    public ResponseEntity<List<AdvanceResponseDto>> findAllAdvance(String token){
+        return ResponseEntity.ok(employeeService.findAllAdvance(token));
+    }
+
 
     @CrossOrigin("*")
     @PutMapping(ADVANCE_APPROVE)
     public ResponseEntity<Boolean> updateStatusAdvance(@RequestBody UpdateStatusRequestDto dto){
         return ResponseEntity.ok(employeeService.updateStatusAdvance(dto));
     }
+
+
 
 
 }

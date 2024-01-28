@@ -2,7 +2,10 @@ package com.bilgeadam.service;
 
 import com.bilgeadam.config.CloudinaryConfig;
 import com.bilgeadam.dto.request.*;
+import com.bilgeadam.dto.response.AdvanceResponseDto;
 import com.bilgeadam.dto.response.EmployeeFindByUserIdDetailResponseDto;
+import com.bilgeadam.dto.response.ExpenseResponseDto;
+import com.bilgeadam.dto.response.PermissionResponseDto;
 import com.bilgeadam.exception.EmployeeManagerException;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.mapper.IAdvanceMapper;
@@ -26,8 +29,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService extends ServiceManager<Employee,String> {
@@ -141,27 +146,12 @@ public class EmployeeService extends ServiceManager<Employee,String> {
             throw new EmployeeManagerException(ErrorType.EMPLOYEE_NOT_CREATED);
         }
         Permission permission = IPermissionMapper.INSTANCE.fromCreatePermissionRequestDto(dto);
-//                .builder()
-//                .epermissionType(dto.getEpermissionType())
-//                .dateOfRequest(LocalDate.now())
-//                .nameEmployee(employee.get().getName())
-//                .surnameEmployee(employee.get().getSurname())
-//                .userId(employee.get().getUserId())
-//                .startDate(dto.getStartDate())
-//                .endDate(dto.getEndDate())
-//                .approvalStatus(PENDING_APPROVAL)
-//                .companyName(employee.get().getCompanyName())
-//                .build();
+        permission.setUserId(userId.get());
         permissionRepository.save(permission);
         return true;
     }
 
 
-
-
-//    public Object updateStatusPermission(UpdateStatusRequestDto dto) {
-//        return 0;
-//    }
 
     public Boolean createExpense(CreateExpenseRequestDto dto) {
         Optional<Long> userId = jwtTokenManager.getIdFromToken(dto.getToken());
@@ -202,6 +192,7 @@ public class EmployeeService extends ServiceManager<Employee,String> {
             throw new EmployeeManagerException(ErrorType.EMPLOYEE_NOT_CREATED);
         }
         Advance advance = IAdvanceMapper.INSTANCE.fromCreateAdvanceRequestDtoToAdvance(dto);
+        advance.setUserId(userId.get());
         advanceRepository.save(advance);
         return  true;
     }
@@ -218,4 +209,59 @@ public class EmployeeService extends ServiceManager<Employee,String> {
     }
 
 
+    public List<ExpenseResponseDto> findAllExpensestoken(String token) {
+        Optional<Long> userId = jwtTokenManager.getIdFromToken(token);
+        if (userId.isEmpty()) {
+            throw new EmployeeManagerException(ErrorType.INVALID_TOKEN);
+        }
+        Optional<Employee> user = employeeRepository.findOptionalByUserId(userId.get());
+        if (user.isEmpty()) {
+            throw new EmployeeManagerException(ErrorType.EMPLOYEE_NOT_FOUND);
+        }
+        return expenseRepository.findAllByUserId(userId.get()).stream().map(a->{
+            return ExpenseResponseDto.builder()
+                    .expenseAmount(a.getExpenseAmount())
+                    .expenseType(a.getExpenseType())
+                    .dateOfResponse(a.getDateOfResponse())
+                    .approvalStatus(a.getApprovalStatus())
+                    .currency(a.getCurrency()).build();
+        }).collect(Collectors.toList());
+
+    }
+
+    public List<AdvanceResponseDto> findAllAdvance(String token) {
+        Optional<Long> userId = jwtTokenManager.getIdFromToken(token);
+        if (userId.isEmpty()) {
+            throw new EmployeeManagerException(ErrorType.INVALID_TOKEN);
+        }
+        Optional<Employee> user = employeeRepository.findOptionalByUserId(userId.get());
+        if (user.isEmpty()) {
+            throw new EmployeeManagerException(ErrorType.EMPLOYEE_NOT_FOUND);
+        }
+        return advanceRepository.findAllByUserId(userId.get()).stream().map(a->{
+            return AdvanceResponseDto.builder()
+                    .amountOfRequest(a.getAmountOfRequest())
+                    .approvalStatus(a.getApprovalStatus())
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
+    public List<PermissionResponseDto> findAllPermission(String token) {
+        Optional<Long> userId = jwtTokenManager.getIdFromToken(token);
+        if (userId.isEmpty()) {
+            throw new EmployeeManagerException(ErrorType.INVALID_TOKEN);
+        }
+        Optional<Employee> user = employeeRepository.findOptionalByUserId(userId.get());
+        if (user.isEmpty()) {
+            throw new EmployeeManagerException(ErrorType.EMPLOYEE_NOT_FOUND);
+        }
+        return permissionRepository.findAllByUserId(userId.get()).stream().map(a->{
+            return PermissionResponseDto.builder()
+                    .permissionType(a.getPermissionType())
+                    .startDate(a.getStartDate())
+                    .endDate(a.getEndDate())
+                    .approvalStatus(a.getApprovalStatus())
+                    .build();
+        }).collect(Collectors.toList());
+    }
 }

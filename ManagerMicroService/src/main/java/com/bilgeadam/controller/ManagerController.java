@@ -1,13 +1,11 @@
 package com.bilgeadam.controller;
 
 import com.bilgeadam.dto.request.CreateManagerRequestDto;
+import com.bilgeadam.dto.reponse.ManagerFindByUserIdDetailResponseDto;
 import com.bilgeadam.service.ManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.bilgeadam.constants.RestApi.*;
 
@@ -20,6 +18,11 @@ public class ManagerController {
     @PostMapping(CREATE)
     public ResponseEntity<Boolean> createManager(@RequestBody CreateManagerRequestDto dto){
         return ResponseEntity.ok(managerService.createManager(dto));
+    }
+    @GetMapping(FINDBYID2)
+    @CrossOrigin("*")
+    public ResponseEntity<ManagerFindByUserIdDetailResponseDto> findByUserDto(@PathVariable Long userId){
+        return ResponseEntity.ok(managerService.findManager(userId));
     }
 
 }
