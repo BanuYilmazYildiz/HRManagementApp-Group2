@@ -15,6 +15,9 @@ public class RestApi {
     public static final String EXPENSE_CREATE = "/expense-create";
     public static final String CREATE_ADVANCE = "/create-advance";
     public static final String ADVANCE_APPROVE = "/advance-approve";
+    public static final String FIND_ALL_EXPENSE = "/findall-expenses";
+    public static final String FIND_ALL_ADVANCE = "/findall-advance";
+    public static final String FIND_ALL_PERMISSION = "/findall-permission";
 
 
 

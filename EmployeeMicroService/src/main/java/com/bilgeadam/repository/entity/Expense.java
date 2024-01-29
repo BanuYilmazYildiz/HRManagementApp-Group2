@@ -29,7 +29,7 @@ public class Expense {
     private Double expenseAmount; // Harcama tutarı
     private ECurrency currency; // para birimi
     @Builder.Default
-    private EApprovalStatus approvalStatus=EApprovalStatus.APPROVED; // onay durumu
+    private EApprovalStatus approvalStatus=EApprovalStatus.PENDING_APPROVAL; // onay durumu
     @Builder.Default
     private LocalDate dateOfRequest = LocalDate.now(); //talep tarihi
     private LocalDate dateOfResponse; // cevaplama tarihi

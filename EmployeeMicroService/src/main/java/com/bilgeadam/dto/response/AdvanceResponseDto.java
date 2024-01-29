@@ -1,25 +1,27 @@
-package com.bilgeadam.dto.request;
+package com.bilgeadam.dto.response;
 
 import com.bilgeadam.utility.enums.EAdvanceAmount;
+import com.bilgeadam.utility.enums.EApprovalStatus;
 import com.bilgeadam.utility.enums.ECurrency;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class CreateAdvanceRequestDto {
 
-    String token;
+public class AdvanceResponseDto {
     private EAdvanceAmount amountOfRequest;
-
-    //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate replyDate;
+    private EApprovalStatus approvalStatus;
+    private LocalDate dateOfRequest;
+    private  String advanceAmountWithSalary;
     private ECurrency currency;
+
+
 }

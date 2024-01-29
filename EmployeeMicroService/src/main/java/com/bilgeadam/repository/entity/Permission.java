@@ -3,6 +3,7 @@ package com.bilgeadam.repository.entity;
 import com.bilgeadam.utility.enums.EApprovalStatus;
 import com.bilgeadam.utility.enums.EPermissionType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -26,9 +27,12 @@ public class Permission extends BaseEntity{
     private EPermissionType permissionType;
     private LocalDate startDate;
     private LocalDate endDate;
-    private LocalDate dateOfRequest;
+    @Builder.Default
+    private LocalDate dateOfRequest = LocalDate.now();
     private int days;
-    private EApprovalStatus approvalStatus;
+    @Builder.Default
+    private EApprovalStatus approvalStatus=EApprovalStatus.PENDING_APPROVAL;
     private LocalDate replyDate;
+    private String description;
 
 }

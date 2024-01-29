@@ -2,6 +2,7 @@ package com.bilgeadam.controller;
 
 import com.bilgeadam.dto.request.LoginRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
+import com.bilgeadam.dto.response.LoginResponseDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.service.UserProfileService;
 import jakarta.validation.Valid;
@@ -20,7 +21,7 @@ public class UserProfileController {
 
     @PostMapping(LOGIN)
     @CrossOrigin("*")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto dto){
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto dto){
         return ResponseEntity.ok(userProfileService.login(dto));
     }
     @PostMapping(REGISTER)

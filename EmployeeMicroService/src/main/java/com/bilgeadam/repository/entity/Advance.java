@@ -1,7 +1,10 @@
 package com.bilgeadam.repository.entity;
 
+import com.bilgeadam.utility.enums.EAdvanceAmount;
 import com.bilgeadam.utility.enums.EApprovalStatus;
+import com.bilgeadam.utility.enums.ECurrency;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -22,9 +25,13 @@ public class Advance extends BaseEntity{
     private Long userId;//String employeeId
     //  private String nameEmployee;
 //  private String surnameEmployee;
-    private Double amountOfRequest;
-    private LocalDate dateOfRequest;
+    private EAdvanceAmount amountOfRequest;
+    @Builder.Default
+    private LocalDate dateOfRequest=LocalDate.now();
     private LocalDate replyDate;
-    private EApprovalStatus approvalStatus;
+    @Builder.Default
+    private EApprovalStatus approvalStatus = EApprovalStatus.PENDING_APPROVAL;
+    private  String  advanceAmountWithSalary;
+    private ECurrency currency;
 
 }

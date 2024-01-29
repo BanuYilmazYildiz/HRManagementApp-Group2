@@ -2,6 +2,7 @@ package com.bilgeadam.service;
 
 import com.bilgeadam.dto.request.LoginRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
+import com.bilgeadam.dto.response.LoginResponseDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.exception.UserManagerException;
@@ -32,7 +33,7 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
         this.managerManager =managerManager;
     }
 
-    public String login(LoginRequestDto dto) {
+    public LoginResponseDto login(LoginRequestDto dto) {
         Optional<UserProfile> userOptional = userRepository.findOptionalByEmailAndPassword(dto.getEmail(),dto.getPassword());
         if (userOptional.isEmpty()){
             throw new UserManagerException(ErrorType.LOGIN_ERROR);
@@ -41,8 +42,12 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
         if(token.isEmpty()){
             throw new UserManagerException(ErrorType.TOKEN_NOT_CREATED);
         }
-        return token.get();
-
+        LoginResponseDto loginResponseDto = LoginResponseDto.builder()
+                .token(token.get())
+                .userId(userOptional.get().getId())
+                .role(userOptional.get().getRole())
+                .build();
+    return loginResponseDto;
     }
 
     public RegisterResponseDto register(RegisterRequestDto dto) {
