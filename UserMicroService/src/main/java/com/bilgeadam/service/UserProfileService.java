@@ -13,6 +13,7 @@ import com.bilgeadam.repository.UserProfileRepository;
 import com.bilgeadam.repository.entity.UserProfile;
 import com.bilgeadam.utility.JwtTokenManager;
 import com.bilgeadam.utility.ServiceManager;
+import com.bilgeadam.utility.enums.ERole;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -52,8 +53,11 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
     public RegisterResponseDto register(RegisterRequestDto dto) {
         UserProfile userProfile = IUserMapper.INSTANCE.fromUserRegisterRequestDtoToUser(dto);
         save(userProfile);
-        employeeManager.createEmployee(IUserMapper.INSTANCE.fromUserToEmployeeCreateRequestDto(userProfile));
-        managerManager.createManager(IUserMapper.INSTANCE.fromUserToCreateManagerRequestDto(userProfile));
+        if (userProfile.getRole().equals(ERole.EMPLOYEE)){
+            employeeManager.createEmployee(IUserMapper.INSTANCE.fromUserToEmployeeCreateRequestDto(userProfile));
+        }else {
+            managerManager.createManager(IUserMapper.INSTANCE.fromUserToCreateManagerRequestDto(userProfile));
+        }
         return IUserMapper.INSTANCE.fromUserToRegisterResponseDto(userProfile);
     }
 }
