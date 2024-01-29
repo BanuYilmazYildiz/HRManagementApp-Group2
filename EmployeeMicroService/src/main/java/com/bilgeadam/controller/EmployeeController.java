@@ -4,11 +4,8 @@ package com.bilgeadam.controller;
 import com.bilgeadam.dto.request.*;
 
 
-import com.bilgeadam.dto.response.AdvanceResponseDto;
-import com.bilgeadam.dto.response.EmployeeFindByUserIdDetailResponseDto;
+import com.bilgeadam.dto.response.*;
 
-import com.bilgeadam.dto.response.ExpenseResponseDto;
-import com.bilgeadam.dto.response.PermissionResponseDto;
 import com.bilgeadam.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -95,7 +92,7 @@ public class EmployeeController {
     }
     @PostMapping(CREATE_ADVANCE)
     @CrossOrigin("*")
-    public ResponseEntity<?> createAdvance(@RequestBody CreateAdvanceRequestDto dto){
+    public ResponseEntity<Boolean> createAdvance(@RequestBody CreateAdvanceRequestDto dto){
         return ResponseEntity.ok(employeeService.createAdvance(dto));
     }
 

@@ -30,7 +30,9 @@ public class Permission extends BaseEntity{
     @Builder.Default
     private LocalDate dateOfRequest = LocalDate.now();
     private int days;
-    private EApprovalStatus approvalStatus;
+    @Builder.Default
+    private EApprovalStatus approvalStatus=EApprovalStatus.PENDING_APPROVAL;
     private LocalDate replyDate;
+    private String description;
 
 }

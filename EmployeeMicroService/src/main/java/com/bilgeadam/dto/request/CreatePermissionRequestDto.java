@@ -27,4 +27,5 @@ public class CreatePermissionRequestDto {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     LocalDate endDate;
     LocalDate dateOfRequest;
+    private String description;
 }

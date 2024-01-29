@@ -19,6 +19,9 @@ public class PermissionResponseDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private EApprovalStatus approvalStatus;
+    private String description;
+    private LocalDate dateOfRequest;
+    private LocalDate replyDate;
 
 
 

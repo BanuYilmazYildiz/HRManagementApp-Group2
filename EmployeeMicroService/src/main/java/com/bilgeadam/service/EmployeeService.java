@@ -2,10 +2,7 @@ package com.bilgeadam.service;
 
 import com.bilgeadam.config.CloudinaryConfig;
 import com.bilgeadam.dto.request.*;
-import com.bilgeadam.dto.response.AdvanceResponseDto;
-import com.bilgeadam.dto.response.EmployeeFindByUserIdDetailResponseDto;
-import com.bilgeadam.dto.response.ExpenseResponseDto;
-import com.bilgeadam.dto.response.PermissionResponseDto;
+import com.bilgeadam.dto.response.*;
 import com.bilgeadam.exception.EmployeeManagerException;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.mapper.IAdvanceMapper;
@@ -22,6 +19,7 @@ import com.bilgeadam.repository.entity.Expense;
 import com.bilgeadam.repository.entity.Permission;
 import com.bilgeadam.utility.JwtTokenManager;
 import com.bilgeadam.utility.ServiceManager;
+import com.bilgeadam.utility.enums.EAdvanceAmount;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.stereotype.Service;
@@ -193,8 +191,17 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         }
         Advance advance = IAdvanceMapper.INSTANCE.fromCreateAdvanceRequestDtoToAdvance(dto);
         advance.setUserId(userId.get());
+
+        if (dto.getAmountOfRequest().equals(EAdvanceAmount.ONE_SALARY)){
+           advance.setAdvanceAmountWithSalary(employee.get().getSalary()+ " "+advance.getCurrency());
+        } else if (dto.getAmountOfRequest().equals(EAdvanceAmount.TWO_SALARY)) {
+            advance.setAdvanceAmountWithSalary(2*employee.get().getSalary()+ " "+advance.getCurrency());
+        }
+        else {
+            advance.setAdvanceAmountWithSalary(3*employee.get().getSalary()+ " "+advance.getCurrency());
+        }
         advanceRepository.save(advance);
-        return  true;
+        return true;
     }
 
     public Boolean updateStatusAdvance(UpdateStatusRequestDto dto) {
@@ -224,7 +231,9 @@ public class EmployeeService extends ServiceManager<Employee,String> {
                     .expenseType(a.getExpenseType())
                     .dateOfResponse(a.getDateOfResponse())
                     .approvalStatus(a.getApprovalStatus())
-                    .currency(a.getCurrency()).build();
+                    .currency(a.getCurrency())
+                    .dateOfRequest(a.getDateOfRequest())
+                    .build();
         }).collect(Collectors.toList());
 
     }
@@ -242,6 +251,10 @@ public class EmployeeService extends ServiceManager<Employee,String> {
             return AdvanceResponseDto.builder()
                     .amountOfRequest(a.getAmountOfRequest())
                     .approvalStatus(a.getApprovalStatus())
+                    .advanceAmountWithSalary(a.getAdvanceAmountWithSalary())
+                    .currency(a.getCurrency())
+                    .dateOfRequest(a.getDateOfRequest())
+                    .replyDate(a.getReplyDate())
                     .build();
         }).collect(Collectors.toList());
     }
@@ -261,6 +274,10 @@ public class EmployeeService extends ServiceManager<Employee,String> {
                     .startDate(a.getStartDate())
                     .endDate(a.getEndDate())
                     .approvalStatus(a.getApprovalStatus())
+                    .description(a.getDescription())
+                    .replyDate(a.getReplyDate())
+                    .dateOfRequest(a.getDateOfRequest())
+                    .description(a.getDescription())
                     .build();
         }).collect(Collectors.toList());
     }

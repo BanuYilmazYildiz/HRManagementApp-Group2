@@ -20,4 +20,5 @@ public class ExpenseResponseDto {
     private ECurrency currency;
     private LocalDate dateOfResponse;
     private EApprovalStatus approvalStatus;
+    private LocalDate dateOfRequest;
 }
