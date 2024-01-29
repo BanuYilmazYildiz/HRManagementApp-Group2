@@ -18,6 +18,7 @@ public class RestApi {
     public static final String FIND_ALL_EXPENSE = "/findall-expenses";
     public static final String FIND_ALL_ADVANCE = "/findall-advance";
     public static final String FIND_ALL_PERMISSION = "/findall-permission";
+    public static final String FIND_ALL_EMPLOYEE = "/findall-employee";
 
 
 

@@ -46,6 +46,7 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
                 .token(token.get())
                 .userId(userOptional.get().getId())
                 .role(userOptional.get().getRole())
+                .company(userOptional.get().getCompany())
                 .build();
     return loginResponseDto;
     }

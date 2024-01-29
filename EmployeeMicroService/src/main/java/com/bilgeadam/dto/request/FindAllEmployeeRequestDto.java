@@ -1,6 +1,5 @@
-package com.bilgeadam.dto.response;
+package com.bilgeadam.dto.request;
 
-import com.bilgeadam.utility.enums.ERole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class LoginResponseDto {
+public class FindAllEmployeeRequestDto {
     private String token;
-    private ERole role;
-    private Long userId;
     private String company;
 }

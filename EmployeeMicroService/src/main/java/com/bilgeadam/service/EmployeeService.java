@@ -20,6 +20,7 @@ import com.bilgeadam.repository.entity.Permission;
 import com.bilgeadam.utility.JwtTokenManager;
 import com.bilgeadam.utility.ServiceManager;
 import com.bilgeadam.utility.enums.EAdvanceAmount;
+import com.bilgeadam.utility.enums.ERole;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.stereotype.Service;
@@ -279,6 +280,13 @@ public class EmployeeService extends ServiceManager<Employee,String> {
                     .dateOfRequest(a.getDateOfRequest())
                     .description(a.getDescription())
                     .build();
+        }).collect(Collectors.toList());
+    }
+
+    public List<FindAllEmployeeResponseDto> findAllEmployee(String company) {
+
+        return employeeRepository.findAllByCompany(company).stream().map(x->{
+            return FindAllEmployeeResponseDto.builder().userId(x.getUserId()).photo(x.getPhoto()).name(x.getName()).surname(x.getSurname()).email(x.getEmail()).address(x.getAddress()).profession(x.getProfession()).department(x.getDepartment()).build();
         }).collect(Collectors.toList());
     }
 }
