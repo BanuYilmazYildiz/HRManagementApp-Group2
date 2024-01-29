@@ -109,6 +109,13 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.updateStatusAdvance(dto));
     }
 
+    @CrossOrigin("*")
+    @GetMapping(FIND_ALL_EMPLOYEE)
+    public ResponseEntity<List<FindAllEmployeeResponseDto>> findAllEmployee(String company){
+        return ResponseEntity.ok(employeeService.findAllEmployee(company));
+    }
+
+
 
 
 
