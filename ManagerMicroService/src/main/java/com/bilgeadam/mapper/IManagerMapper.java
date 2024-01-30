@@ -1,7 +1,7 @@
 package com.bilgeadam.mapper;
 
 import com.bilgeadam.dto.request.CreateManagerRequestDto;
-import com.bilgeadam.dto.reponse.ManagerFindByUserIdDetailResponseDto;
+import com.bilgeadam.dto.response.ManagerFindByUserIdDetailResponseDto;
 import com.bilgeadam.repository.entity.Manager;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

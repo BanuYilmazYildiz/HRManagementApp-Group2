@@ -1,4 +1,4 @@
-package com.bilgeadam.dto.reponse;
+package com.bilgeadam.dto.response;
 
 import com.bilgeadam.utility.enums.ERole;
 import lombok.AllArgsConstructor;
