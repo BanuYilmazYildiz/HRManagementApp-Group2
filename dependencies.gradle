@@ -36,7 +36,7 @@ ext{
             // Spring 3.0 öncesi spring 2.7.7 versiyonu ile cloud 3.1.5 kullanıldığında sorunsuz çalışır.
 //            springCloudSleuthZipkin:        "org.springframework.cloud:spring-cloud-sleuth-zipkin:3.1.9",
 //            springCloudSleuth:              "org.springframework.cloud:spring-cloud-starter-sleuth:3.1.9"
-            springCloudinary            : "com.cloudinary:cloudinary-http44:$versions.cloudinary",
+            springCloudinary            : "com.cloudinary:cloudinary-http44:$versions.cloudinary"
     ]
 
 }
