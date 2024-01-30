@@ -1,9 +1,13 @@
 package com.bilgeadam.controller;
 
 import com.bilgeadam.dto.request.CreateManagerRequestDto;
-import com.bilgeadam.dto.reponse.ManagerFindByUserIdDetailResponseDto;
+import com.bilgeadam.dto.request.ImageUploadRequestDto;
+import com.bilgeadam.dto.request.UpdateRequestDto;
+import com.bilgeadam.dto.response.ManagerFindByUserIdDetailResponseDto;
 import com.bilgeadam.service.ManagerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +27,18 @@ public class ManagerController {
     @CrossOrigin("*")
     public ResponseEntity<ManagerFindByUserIdDetailResponseDto> findByUserDto(@PathVariable Long userId){
         return ResponseEntity.ok(managerService.findManager(userId));
+    }
+
+    @CrossOrigin("*")
+    @PostMapping(value = IMAGE_UPLOAD,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Boolean> updateImage(@RequestBody @Valid @ModelAttribute ImageUploadRequestDto dto)  {
+        return ResponseEntity.ok(managerService.updateImage(dto));
+    }
+
+    @PutMapping(UPDATE)
+    @CrossOrigin("*")
+    public ResponseEntity<Boolean> updateUser( @RequestBody UpdateRequestDto dto){
+        return ResponseEntity.ok(managerService.updateUser(dto));
     }
 
 }
