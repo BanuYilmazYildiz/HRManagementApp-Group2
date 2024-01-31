@@ -43,6 +43,8 @@ public class UserProfile extends BaseEntity{
     private String address;
     private String phone;
     private Double salary;
+    private String personalEmail;
+    private String activationCode;
 
 
 

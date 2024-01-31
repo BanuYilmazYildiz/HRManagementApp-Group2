@@ -39,7 +39,9 @@ public class Manager extends BaseEntity{
     private String profession;
     private String department;
     private String company;
-    private String email;
+    private String email; //ad.soyad@company.com
+    private String personalEmail;
+    private String activationCode;
     private String address;
     private String phone;
     private Double salary;

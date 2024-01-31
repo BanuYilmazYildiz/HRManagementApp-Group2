@@ -38,7 +38,9 @@ public class Employee extends BaseEntity{
     private String profession; //meslek
     private String department;
     private String company;
-    private String email; //ad.soyad@bilgeadamboost.com
+    private String email; //ad.soyad@company.com
+    private String personalEmail;
+    private String activationCode;
     private String address;
     private String phone;
     private Double salary;

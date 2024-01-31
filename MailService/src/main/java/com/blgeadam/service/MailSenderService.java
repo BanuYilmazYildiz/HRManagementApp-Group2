@@ -14,10 +14,12 @@ public class MailSenderService {
 
     public void sendMail(RegisterMailModel model){
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom("${java11mailusername}");
-        mailMessage.setTo(model.getEmail());
+        mailMessage.setFrom("grup2java11@gmail.com");
+        mailMessage.setTo(model.getPersonalEmail());
         mailMessage.setSubject("HrManagementApp Aktivasyon Kodunuz");
-        mailMessage.setText("Hesap Dogrulama Kodunuz : " + model.getActivationCode());
+        mailMessage.setText("Sayin " +model.getName() + " " + model.getSurname() + ", " + model.getCompany() + " sirketimize hosgeldiniz.İş mailiniz"
+        + model.getEmail() + " tek kullanımlık sifreniz " + model.getActivationCode()
+        );
         javaMailSender.send(mailMessage);
     }
 }

@@ -53,6 +53,7 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
 
     public RegisterResponseDto register(RegisterRequestDto dto) {
         UserProfile userProfile = IUserMapper.INSTANCE.fromUserRegisterRequestDtoToUser(dto);
+        userProfile.setEmail(dto.getName()+"." +dto.getSurname()+"@"+dto.getCompany()+".com");
         save(userProfile);
         if (userProfile.getRole().equals(ERole.EMPLOYEE)){
             employeeManager.createEmployee(IUserMapper.INSTANCE.fromUserToEmployeeCreateRequestDto(userProfile));
