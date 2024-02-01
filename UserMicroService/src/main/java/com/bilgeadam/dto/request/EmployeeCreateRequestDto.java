@@ -32,4 +32,5 @@ public class EmployeeCreateRequestDto {
     private String phone;
     private Double salary;
     private ERole role;
+    private String personalEmail;
 }

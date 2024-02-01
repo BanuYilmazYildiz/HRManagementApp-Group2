@@ -4,9 +4,15 @@ server:
   port: 9095
 
 spring:
+#  cloud:
+#    config:
+#      import-check:
+#        enabled: false
+
+
   mail:
-    username: "grup2java11@gmail.com"
-    password: "buraya bakıcaz"
+    username: grup2java11@gmail.com
+    password: lexiuvxbsgdpnahu
     host: smtp.gmail.com
     port: 587
     properties:
@@ -23,3 +29,4 @@ spring:
 
 rabbitmq:
   register-mail-queue: register-mail-queue
+  password-reset-mail-queue: password-reset-mail-queue

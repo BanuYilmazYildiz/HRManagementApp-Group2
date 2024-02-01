@@ -14,31 +14,38 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMqConfig {
     @Value("${rabbitmq.exchange-user}")
     private String exchange;
-    @Value("${rabbitmq.register-key}")
-    private String registerBindingKey;
-    @Value("${rabbitmq.queue-register}")
-    private String queueNameRegister;
+//    @Value("${rabbitmq.register-key}")
+//    private String registerBindingKey;
+//    @Value("${rabbitmq.queue-register}")
+//    private String queueNameRegister;
     @Value("${rabbitmq.register-mail-key}")
     private String registerMailBindingKey;
     @Value("${rabbitmq.register-mail-queue}")
     private String registerMailQueue;
 
+    @Value("${rabbitmq.password-reset-mail-key}")
+    private String passwordResetMailBindingKey;
+
+    @Value("${rabbitmq.password-reset-mail-queue}")
+    private String passwordResetMailQueue;
+
+
     @Bean
-    public DirectExchange exchangeAuth(){
+    public DirectExchange exchangeUser(){
         return new DirectExchange(exchange); // user exchange
     }
 
-    @Bean
-    public Queue registerQueue(){
-        return new Queue(queueNameRegister);
-        // register metodu icin yazıldı ondan ismi bu sıra gereken her seyde onlara ait olusturulacak
-        // 15672 de register-queue olarak gozukecek
-    }
+//    @Bean
+//    public Queue registerQueue(){
+//        return new Queue(queueNameRegister);
+//        // register metodu icin yazıldı ondan ismi bu sıra gereken her seyde onlara ait olusturulacak
+//        // 15672 de register-queue olarak gozukecek
+//    }
 
-    @Bean
-    public Binding bindingRegister(final Queue registerQueue , DirectExchange exchangeAuth){
-        return BindingBuilder.bind(registerQueue).to(exchangeAuth).with(registerBindingKey);
-    }
+//    @Bean
+//    public Binding bindingRegister(final Queue registerQueue , DirectExchange exchangeUser){
+//        return BindingBuilder.bind(registerQueue).to(exchangeUser).with(registerBindingKey);
+//    }
 
     @Bean
     public Queue registerMailQueue(){
@@ -47,8 +54,19 @@ public class RabbitMqConfig {
         // 15672 de register-queue olarak gozukecek
     }
     @Bean
-    public Binding bindingRegisterMail(final Queue registerMailQueue ,DirectExchange exchangeAuth){
-        return BindingBuilder.bind(registerMailQueue).to(exchangeAuth).with(registerMailBindingKey);
+    public Queue passwordResetMailQueue(){
+        return new Queue(passwordResetMailQueue);
+        // register metodu icin yazıldı ondan ismi bu sıra gereken her seyde onlara ait olusturulacak
+        // 15672 de register-queue olarak gozukecek
+    }
+    @Bean
+    public Binding bindingRegisterMail(final Queue registerMailQueue ,DirectExchange exchangeUser){
+        return BindingBuilder.bind(registerMailQueue).to(exchangeUser).with(registerMailBindingKey);
+    }
+
+    @Bean
+    public Binding bindingPasswordResetMail(final Queue passwordResetMailQueue ,DirectExchange exchangeUser){
+        return BindingBuilder.bind(passwordResetMailQueue).to(exchangeUser).with(passwordResetMailBindingKey);
     }
 
 

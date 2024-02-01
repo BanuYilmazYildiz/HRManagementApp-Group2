@@ -29,3 +29,5 @@ rabbitmq:
   queue-register: register-queue
   register-mail-key: register-mail-key
   register-mail-queue: register-mail-queue
+  password-reset-mail-key: password-reset-mail-key
+  password-reset-mail-queue: password-reset-mail-queue

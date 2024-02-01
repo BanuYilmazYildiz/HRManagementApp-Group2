@@ -1,7 +1,7 @@
-package com.blgeadam.rabbitmq.consumer;
+package com.bilgeadam.rabbitmq.consumer;
 
-import com.blgeadam.rabbitmq.model.RegisterMailModel;
-import com.blgeadam.service.MailSenderService;
+import com.bilgeadam.rabbitmq.model.RegisterMailModel;
+import com.bilgeadam.service.MailSenderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -15,6 +15,7 @@ public class RegisterMailConsumer {
     private final MailSenderService mailSenderService;
     @RabbitListener(queues = "${rabbitmq.register-mail-queue}")
     public void sendActivationCode(RegisterMailModel model){
+        log.info("model{}",model.toString());
         mailSenderService.sendMail(model);
     }
 }

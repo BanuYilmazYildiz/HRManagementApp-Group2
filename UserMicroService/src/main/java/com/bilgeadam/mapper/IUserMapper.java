@@ -3,7 +3,10 @@ package com.bilgeadam.mapper;
 import com.bilgeadam.dto.request.CreateManagerRequestDto;
 import com.bilgeadam.dto.request.EmployeeCreateRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
+import com.bilgeadam.dto.response.PasswordResetResponseDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
+import com.bilgeadam.rabbitmq.model.PasswordResetModel;
+import com.bilgeadam.rabbitmq.model.RegisterMailModel;
 import com.bilgeadam.repository.entity.UserProfile;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -23,4 +26,8 @@ public interface IUserMapper {
     CreateManagerRequestDto fromUserToCreateManagerRequestDto(UserProfile userProfile);
 
     RegisterResponseDto fromUserToRegisterResponseDto(UserProfile userProfile);
+    PasswordResetResponseDto fromUserToPasswordResetResponseDto(UserProfile userProfile);
+
+    RegisterMailModel fromUserToRegisterMailModel(UserProfile userProfile);
+    PasswordResetModel fromUserToPasswordResetMailModel(UserProfile userProfile);
 }
