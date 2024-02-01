@@ -29,8 +29,7 @@ public class RegisterRequestDto {
     private String birthplace;
     private String tcNo;
     private LocalDate startDateToWork;
-    private LocalDate resignationDate; //işten çıkış tarihi
-    private String profession; //meslek
+    private String profession;
     private String department;
     private String company;
     private String personalEmail;
@@ -39,8 +38,5 @@ public class RegisterRequestDto {
     private Double salary;
     @Enumerated(EnumType.STRING)
     private ERole role;
-    @NotEmpty(message = "Şifreyi boş geçemezsiniz")
-    @Size(min = 8,max = 32, message = "Şifre 8 ile 32 karakter arasında olmalıdır.")
-    @NotEmpty(message = "Şifreyi boş geçemezsiniz")
-    private String password;
+
 }

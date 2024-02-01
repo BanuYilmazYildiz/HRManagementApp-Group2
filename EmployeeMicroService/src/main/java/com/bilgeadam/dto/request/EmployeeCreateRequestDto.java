@@ -22,13 +22,13 @@ public class EmployeeCreateRequestDto {
     private LocalDate birthday;
     private String birthplace;
     private String tcNo;
-    private LocalDate startDateToWork;
-    private LocalDate resignationDate; //işten çıkış tarihi
+    @Builder.Default
+    private LocalDate startDateToWork=LocalDate.now();
     private String profession; //meslek
     private String department;
     private String company;
     private String personalEmail;
-    //ad.soyad@bilgeadamboost.com
+    private String email;
     private String address;
     private String phone;
     private Double salary;
