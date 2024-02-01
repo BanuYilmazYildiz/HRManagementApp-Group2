@@ -10,12 +10,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-#
-#  rabbitmq:
-#    host: localhost
-#    port: 5672
-#    username: java11
-#    password: 123
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: java11
+    password: 123
 
 
 jwt:
@@ -23,9 +23,11 @@ jwt:
   issuer: "java11Bilgeadam"
   audience: "bilgeadam"
 
-#rabbitmq:
-#  exchange-auth: auth-exchange
-#  register-key: register-key
-#  queue-register: register-queue
-#  register-mail-key: register-mail-key
-#  register-mail-queue: register-mail-queue
+rabbitmq:
+  exchange-user: user-exchange
+  register-key: register-key
+  queue-register: register-queue
+  register-mail-key: register-mail-key
+  register-mail-queue: register-mail-queue
+  password-reset-mail-key: password-reset-mail-key
+  password-reset-mail-queue: password-reset-mail-queue

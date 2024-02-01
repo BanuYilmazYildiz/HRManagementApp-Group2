@@ -76,7 +76,10 @@ public class EmployeeService extends ServiceManager<Employee,String> {
 
     public Boolean createUser(EmployeeCreateRequestDto dto) {
         try {
-            save(IEmployeeMapper.INSTANCE.fromCreateRequestToEmployee(dto));
+           // save(IEmployeeMapper.INSTANCE.fromCreateRequestToEmployee(dto));
+            Employee employee = IEmployeeMapper.INSTANCE.fromCreateRequestToEmployee(dto);
+            employee.setEmail(dto.getName()+"." +dto.getSurname()+"@"+dto.getCompany()+".com");
+            save(employee);
             return true;
         } catch (Exception e){
             throw new EmployeeManagerException(ErrorType.EMPLOYEE_NOT_CREATED);

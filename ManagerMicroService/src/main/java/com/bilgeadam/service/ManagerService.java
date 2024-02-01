@@ -38,7 +38,10 @@ public class ManagerService extends ServiceManager<Manager,String> {
 
     public Boolean createManager(CreateManagerRequestDto dto) {
         try {
-            save(IManagerMapper.INSTANCE.fromCreateRequestToManager(dto));
+          //  save(IManagerMapper.INSTANCE.fromCreateRequestToManager(dto));
+            Manager manager = IManagerMapper.INSTANCE.fromCreateRequestToManager(dto);
+            manager.setEmail(dto.getName()+"." +dto.getSurname()+"@"+dto.getCompany()+".com");
+            save(manager);
             return true;
         } catch (Exception e){
             throw  new ManagerManagerException(ErrorType.MANAGER_NOT_CREATED);

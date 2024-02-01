@@ -3,4 +3,5 @@ include 'EmployeeMicroService'
 include 'UserMicroService'
 include 'ConfigServer'
 include 'ManagerMicroService'
+include 'MailService'
 

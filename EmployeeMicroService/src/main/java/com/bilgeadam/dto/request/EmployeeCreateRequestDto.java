@@ -27,7 +27,8 @@ public class EmployeeCreateRequestDto {
     private String profession; //meslek
     private String department;
     private String company;
-    private String email; //ad.soyad@bilgeadamboost.com
+    private String personalEmail;
+    //ad.soyad@bilgeadamboost.com
     private String address;
     private String phone;
     private Double salary;
