@@ -1,5 +1,6 @@
 package com.bilgeadam.controller;
 
+import com.bilgeadam.dto.request.ChangePasswordRequestDto;
 import com.bilgeadam.dto.request.PasswordResetRequestDto;
 import com.bilgeadam.dto.request.LoginRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
@@ -40,6 +41,12 @@ public class UserProfileController {
     @PostMapping(PASSWORDRESET)
     public ResponseEntity<PasswordResetResponseDto> passwordReset(@RequestBody @Valid PasswordResetRequestDto dto){
         return ResponseEntity.ok(userProfileService.passwordReset(dto));
+    }
+
+    @PostMapping(CHANGEPASSWORD)
+    @CrossOrigin("*")
+    public ResponseEntity<Boolean> changePassword(@RequestBody @Valid ChangePasswordRequestDto dto){
+        return ResponseEntity.ok(userProfileService.changePassword(dto));
     }
 
 }

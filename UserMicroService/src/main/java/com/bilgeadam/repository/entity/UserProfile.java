@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -32,7 +33,8 @@ public class UserProfile extends BaseEntity{
     private ERole role;
     private String tcNo;
     private String company;
-    private LocalDate startDateToWork;
+    @Builder.Default
+    private LocalDate startDateToWork=LocalDate.now();
     private LocalDate resignationDate; //işten çıkış tarihi
     private String photo;
 

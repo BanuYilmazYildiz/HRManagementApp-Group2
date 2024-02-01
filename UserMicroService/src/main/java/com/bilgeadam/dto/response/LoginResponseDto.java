@@ -15,4 +15,6 @@ public class LoginResponseDto {
     private ERole role;
     private Long userId;
     private String company;
+    private String activationCode;
+    private String password;
 }

@@ -78,7 +78,6 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         try {
            // save(IEmployeeMapper.INSTANCE.fromCreateRequestToEmployee(dto));
             Employee employee = IEmployeeMapper.INSTANCE.fromCreateRequestToEmployee(dto);
-            employee.setEmail(dto.getName()+"." +dto.getSurname()+"@"+dto.getCompany()+".com");
             save(employee);
             return true;
         } catch (Exception e){
