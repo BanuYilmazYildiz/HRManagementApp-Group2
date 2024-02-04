@@ -31,7 +31,7 @@ public class EmployeeController {
 
     @PutMapping(UPDATE_EMPLOYEE)
     @CrossOrigin("*")
-    public ResponseEntity<Boolean> updateUser( @RequestBody EmployeeUpdateRequestDto dto){
+    public ResponseEntity<Boolean> updateUser( @RequestBody @Valid EmployeeUpdateRequestDto dto){
         return ResponseEntity.ok(employeeService.updateUser( dto));
     }
 
@@ -48,7 +48,7 @@ public class EmployeeController {
     }
 
     @PostMapping(CREATE)
-    public ResponseEntity<Boolean> createEmployee(@RequestBody EmployeeCreateRequestDto dto){
+    public ResponseEntity<Boolean> createEmployee(@RequestBody @Valid EmployeeCreateRequestDto dto){
         return ResponseEntity.ok(employeeService.createUser(dto));
     }
 
@@ -60,7 +60,7 @@ public class EmployeeController {
 
     @PostMapping(PERMISSION_CREATE)
     @CrossOrigin("*")
-    public ResponseEntity<?> createPermission(@RequestBody CreatePermissionRequestDto dto){
+    public ResponseEntity<?> createPermission(@RequestBody @Valid CreatePermissionRequestDto dto){
         return ResponseEntity.ok(employeeService.createPermission(dto));
     }
 
@@ -72,14 +72,14 @@ public class EmployeeController {
 
     @CrossOrigin("*")
     @PutMapping(PERMISSION_APPROVE)
-    public ResponseEntity<Boolean> updateStatusPermission(@RequestBody UpdateStatusRequestDto dto){
+    public ResponseEntity<Boolean> updateStatusPermission(@RequestBody @Valid UpdateStatusRequestDto dto){
         return ResponseEntity.ok(employeeService.updateStatusPermission(dto));
     }
 
 
     @PostMapping(EXPENSE_CREATE)
     @CrossOrigin("*")
-    public ResponseEntity<Boolean> createExpense(@RequestBody CreateExpenseRequestDto dto){
+    public ResponseEntity<Boolean> createExpense(@RequestBody @Valid CreateExpenseRequestDto dto){
         return ResponseEntity.ok(employeeService.createExpense(dto));
     }
 
@@ -92,7 +92,7 @@ public class EmployeeController {
     }
     @PostMapping(CREATE_ADVANCE)
     @CrossOrigin("*")
-    public ResponseEntity<Boolean> createAdvance(@RequestBody CreateAdvanceRequestDto dto){
+    public ResponseEntity<Boolean> createAdvance(@RequestBody @Valid CreateAdvanceRequestDto dto){
         return ResponseEntity.ok(employeeService.createAdvance(dto));
     }
 
@@ -105,7 +105,7 @@ public class EmployeeController {
 
     @CrossOrigin("*")
     @PutMapping(ADVANCE_APPROVE)
-    public ResponseEntity<Boolean> updateStatusAdvance(@RequestBody UpdateStatusRequestDto dto){
+    public ResponseEntity<Boolean> updateStatusAdvance(@RequestBody @Valid UpdateStatusRequestDto dto){
         return ResponseEntity.ok(employeeService.updateStatusAdvance(dto));
     }
 
