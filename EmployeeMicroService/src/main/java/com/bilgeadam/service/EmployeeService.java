@@ -9,6 +9,12 @@ import com.bilgeadam.mapper.IAdvanceMapper;
 import com.bilgeadam.mapper.IEmployeeMapper;
 import com.bilgeadam.mapper.IExpenseMapper;
 import com.bilgeadam.mapper.IPermissionMapper;
+import com.bilgeadam.rabbitmq.model.CreateAdvanceModel;
+import com.bilgeadam.rabbitmq.model.CreateExpenseModel;
+import com.bilgeadam.rabbitmq.model.CreatePermissionModel;
+import com.bilgeadam.rabbitmq.producer.AdvanceProducer;
+import com.bilgeadam.rabbitmq.producer.ExpenseProducer;
+import com.bilgeadam.rabbitmq.producer.PermissionProducer;
 import com.bilgeadam.repository.EmployeeRepository;
 import com.bilgeadam.repository.ExpenseRepository;
 import com.bilgeadam.repository.IAdvanceRepository;
@@ -20,7 +26,6 @@ import com.bilgeadam.repository.entity.Permission;
 import com.bilgeadam.utility.JwtTokenManager;
 import com.bilgeadam.utility.ServiceManager;
 import com.bilgeadam.utility.enums.EAdvanceAmount;
-import com.bilgeadam.utility.enums.ERole;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.stereotype.Service;
@@ -42,16 +47,24 @@ public class EmployeeService extends ServiceManager<Employee,String> {
     private final JwtTokenManager jwtTokenManager;
     private final CloudinaryConfig cloudinaryConfig;
 
-    private final ExpenseRepository expenseRepository;
+    private final ExpenseProducer expenseProducer;
 
-    public EmployeeService(EmployeeRepository employeeRepository, PermissionRepository permissionRepository, IAdvanceRepository advanceRepository, JwtTokenManager jwtTokenManager, CloudinaryConfig cloudinaryConfig, ExpenseRepository expenseRepository) {
+    private final ExpenseRepository expenseRepository;
+    private final PermissionProducer permissionProducer;
+    private final AdvanceProducer advanceProducer;
+
+
+    public EmployeeService(EmployeeRepository employeeRepository, PermissionRepository permissionRepository, IAdvanceRepository advanceRepository, JwtTokenManager jwtTokenManager, CloudinaryConfig cloudinaryConfig, ExpenseProducer expenseProducer, ExpenseRepository expenseRepository, PermissionProducer permissionProducer, AdvanceProducer advanceProducer) {
         super(employeeRepository);
         this.employeeRepository=employeeRepository;
         this.permissionRepository = permissionRepository;
         this.advanceRepository = advanceRepository;
         this.jwtTokenManager=jwtTokenManager;
         this.cloudinaryConfig = cloudinaryConfig;
+        this.expenseProducer = expenseProducer;
         this.expenseRepository = expenseRepository;
+        this.permissionProducer = permissionProducer;
+        this.advanceProducer = advanceProducer;
     }
 
     public Boolean updateUser(EmployeeUpdateRequestDto dto) {
@@ -149,6 +162,11 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         Permission permission = IPermissionMapper.INSTANCE.fromCreatePermissionRequestDto(dto);
         permission.setUserId(userId.get());
         permissionRepository.save(permission);
+        CreatePermissionModel createPermissionModel = IPermissionMapper.INSTANCE.fromPermissionToPermissionModel(permission);
+        createPermissionModel.setName(employee.get().getName());
+        createPermissionModel.setSurname(employee.get().getSurname());
+        permissionProducer.createPermission(createPermissionModel);
+
         return true;
     }
 
@@ -168,6 +186,11 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         expense.setName(employee.get().getName());
         expense.setSurname(employee.get().getSurname());
         expenseRepository.save(expense);
+        CreateExpenseModel createExpenseModel = IExpenseMapper.INSTANCE.fromEmployeeToExpenseModel(expense);
+        createExpenseModel.setName(employee.get().getName());
+        createExpenseModel.setSurname(employee.get().getSurname());
+        expenseProducer.createExpense(createExpenseModel);
+
         return true;
     }
 
@@ -204,6 +227,11 @@ public class EmployeeService extends ServiceManager<Employee,String> {
             advance.setAdvanceAmountWithSalary(3*employee.get().getSalary()+ " "+advance.getCurrency());
         }
         advanceRepository.save(advance);
+        CreateAdvanceModel createAdvanceModel = IAdvanceMapper.INSTANCE.fromAdvanceToAdvanceModel(advance);
+        createAdvanceModel.setName(employee.get().getName());
+        createAdvanceModel.setSurname(employee.get().getSurname());
+        advanceProducer.createAdvance(createAdvanceModel);
+
         return true;
     }
 

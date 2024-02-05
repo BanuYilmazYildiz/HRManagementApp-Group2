@@ -18,7 +18,11 @@ public enum ErrorType {
     //    ACCOUNT_NOT_ACTIVE(4116,"Hesabınız aktif edilmemiştir. Lütfen hesabınızı aktif hale getiriniz..." , HttpStatus.FORBIDDEN),
     EMPLOYEE_NOT_CREATED(4117,"Employee profili olusturulamadi...",HttpStatus.BAD_REQUEST),
     //    ROLE_NOT_FOUND(4118,"Boyle bir kullanici rolu bulunmamaktadir..." ,HttpStatus.BAD_REQUEST );
-    MANAGER_NOT_CREATED(4118,"Manager olusturulamadi",HttpStatus.BAD_REQUEST);
+    MANAGER_NOT_CREATED(4118,"Manager olusturulamadi",HttpStatus.BAD_REQUEST),
+    EXPENSE_NOT_CREATED(4119,"Expense olusturulamadi",HttpStatus.BAD_REQUEST),
+    PERMISSION_NOT_CREATED(4120,"Permission olusturulamadi",HttpStatus.BAD_REQUEST),
+    ADVANCE_NOT_CREATED(4121,"Advance olusturulamadi",HttpStatus.BAD_REQUEST);
+
 
     private int code;
     private String message;

@@ -4,12 +4,15 @@ import com.bilgeadam.dto.request.CreateManagerRequestDto;
 import com.bilgeadam.dto.request.ImageUploadRequestDto;
 import com.bilgeadam.dto.request.UpdateRequestDto;
 import com.bilgeadam.dto.response.ManagerFindByUserIdDetailResponseDto;
+import com.bilgeadam.repository.entity.ExpenseForManager;
 import com.bilgeadam.service.ManagerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.bilgeadam.constants.RestApi.*;
 
@@ -39,6 +42,12 @@ public class ManagerController {
     @CrossOrigin("*")
     public ResponseEntity<Boolean> updateUser( @RequestBody UpdateRequestDto dto){
         return ResponseEntity.ok(managerService.updateUser(dto));
+    }
+
+    @GetMapping(FIND_ALL_EXPENSE_FOR_MANAGER)
+    @CrossOrigin("*")
+    public ResponseEntity<List<ExpenseForManager>> findAllExpense( ){
+        return ResponseEntity.ok(managerService.findAllExpense());
     }
 
 }
