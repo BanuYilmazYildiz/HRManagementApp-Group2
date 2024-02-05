@@ -31,3 +31,9 @@ rabbitmq:
   exchange-employee: employee-exchange
   register-key: register-key
   queue-register: register-queue
+  queue-expense-queue: expense-queue
+  password-expense-key: expense-key
+  queue-permission-queue: permission-queue
+  password-permission-key: permission-key
+  queue-advance-queue: advance-queue
+  password-advance-key: advance-key

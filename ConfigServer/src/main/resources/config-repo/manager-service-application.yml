@@ -3,11 +3,7 @@ server:
 
 
 spring:
-  #  rabbitmq:
-  #    host: localhost #34.155.175.192
-  #    port: 5672 #rest portu
-  #    username: java11
-  #    password: 123
+
   data:
     mongodb:
       host: localhost
@@ -15,11 +11,11 @@ spring:
       database: hrmEmployeeDB
       username: defaultUSer
       password: bilge!*123
-#  rabbitmq:
-#    host: localhost
-#    port: 5672
-#    username: java11
-#    password: 123
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: java11
+    password: 123
 
 jwt:
   secretkey: "Yoklr8?8h8biDrOtiS_iT_opheQlKE@l3WEVL_!a4E6e#r*Seb+phEwO$7arURaZ"
@@ -27,7 +23,7 @@ jwt:
   audience: "bilgeadam"
 
 
-#rabbitmq:
-#  exchange-auth: auth-exchange
-#  register-key: register-key
-#  queue-register: register-queue
+rabbitmq:
+  queue-expense-queue: expense-queue
+  queue-permission-queue: permission-queue
+  queue-advance-queue: advance-queue

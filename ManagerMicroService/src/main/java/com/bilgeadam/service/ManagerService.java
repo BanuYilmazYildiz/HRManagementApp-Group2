@@ -7,9 +7,21 @@ import com.bilgeadam.dto.request.UpdateRequestDto;
 import com.bilgeadam.dto.response.ManagerFindByUserIdDetailResponseDto;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.exception.ManagerManagerException;
+import com.bilgeadam.mapper.IAdvanceForManagerMapper;
+import com.bilgeadam.mapper.IExpenseForManagerMapper;
 import com.bilgeadam.mapper.IManagerMapper;
+import com.bilgeadam.mapper.IPermissionForManagerMapper;
+import com.bilgeadam.rabbitmq.model.CreateAdvanceModel;
+import com.bilgeadam.rabbitmq.model.CreateExpenseModel;
+import com.bilgeadam.rabbitmq.model.CreatePermissionModel;
+import com.bilgeadam.repository.IAdvanceForManagerRepository;
+import com.bilgeadam.repository.IExpenseForManagerRepository;
 import com.bilgeadam.repository.IManagerRepository;
+import com.bilgeadam.repository.IPermissionForManagerRepository;
+import com.bilgeadam.repository.entity.AdvanceForManager;
+import com.bilgeadam.repository.entity.ExpenseForManager;
 import com.bilgeadam.repository.entity.Manager;
+import com.bilgeadam.repository.entity.PermissionForManager;
 import com.bilgeadam.utility.JwtTokenManager;
 import com.bilgeadam.utility.ServiceManager;
 import com.cloudinary.Cloudinary;
@@ -18,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,11 +41,18 @@ public class ManagerService extends ServiceManager<Manager,String> {
     private final JwtTokenManager jwtTokenManager;
     private final CloudinaryConfig cloudinaryConfig;
 
-    public ManagerService(IManagerRepository managerRepository, JwtTokenManager jwtTokenManager, CloudinaryConfig cloudinaryConfig) {
+   private final IExpenseForManagerRepository expenseForManagerRepository;
+   private final IPermissionForManagerRepository permissionForManagerRepository;
+   private final IAdvanceForManagerRepository advanceForManagerRepository;
+
+    public ManagerService(IManagerRepository managerRepository, JwtTokenManager jwtTokenManager, CloudinaryConfig cloudinaryConfig, IExpenseForManagerRepository expenseForManagerRepository, IPermissionForManagerRepository permissionForManagerRepository, IAdvanceForManagerRepository advanceForManagerRepository) {
         super(managerRepository);
         this.managerRepository = managerRepository;
         this.jwtTokenManager = jwtTokenManager;
         this.cloudinaryConfig = cloudinaryConfig;
+        this.expenseForManagerRepository = expenseForManagerRepository;
+        this.permissionForManagerRepository = permissionForManagerRepository;
+        this.advanceForManagerRepository = advanceForManagerRepository;
     }
 
 
@@ -104,5 +124,39 @@ public class ManagerService extends ServiceManager<Manager,String> {
         employee.get().setAddress(dto.getAddress());
         update(employee.get());
         return true;
+    }
+
+    public Boolean createExpense(CreateExpenseModel model) {
+        try {
+             ExpenseForManager expenseForManager = IExpenseForManagerMapper.INSTANCE.fromCreateExpenseModelToExpenseForManager(model);
+             expenseForManagerRepository.save(expenseForManager);
+            return true;
+        } catch (Exception e){
+            throw new ManagerManagerException(ErrorType.EXPENSE_NOT_CREATED);
+        }
+    }
+
+    public List<ExpenseForManager> findAllExpense() {
+        return expenseForManagerRepository.findAll();
+    }
+
+    public Boolean createPermission(CreatePermissionModel model) {
+        try {
+            PermissionForManager permissionForManager = IPermissionForManagerMapper.INSTANCE.fromCreatePermissionModelToExpenseForManager(model);
+            permissionForManagerRepository.save(permissionForManager);
+            return true;
+        } catch (Exception e){
+            throw new ManagerManagerException(ErrorType.PERMISSION_NOT_CREATED);
+        }
+    }
+
+    public Boolean createAdvance(CreateAdvanceModel model) {
+        try {
+            AdvanceForManager advanceForManager = IAdvanceForManagerMapper.INSTANCE.fromCreateAdvanceModelToAdvanceForManager(model);
+            advanceForManagerRepository.save(advanceForManager);
+            return true;
+        } catch (Exception e){
+            throw new ManagerManagerException(ErrorType.ADVANCE_NOT_CREATED);
+        }
     }
 }

@@ -10,4 +10,5 @@ public class RestApi {
     public static final String FINDBYID2 = "/find-by-id2/{userId}";
     public static final String CREATE = "/create";
     public static final String IMAGE_UPLOAD = "/image-upload";
+    public static final String FIND_ALL_EXPENSE_FOR_MANAGER = "/find-all-expense-for-manager";
 }
