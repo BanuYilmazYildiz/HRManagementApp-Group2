@@ -32,6 +32,17 @@ public class RabbitMqConfig {
     @Value("${rabbitmq.password-advance-key}")
     private String createAdvanceBindingKey;
 
+    @Value("${rabbitmq.queue-update-expense-queue}")
+    private String expenseUpdateQueue;
+
+    @Value("${rabbitmq.queue-update-advance-queue}")
+    private String advanceUpdateQueue;
+
+    @Value("${rabbitmq.queue-update-permission-queue}")
+    private String permissionUpdateQueue;
+
+
+
 
    @Bean
     public DirectExchange exchangeEmployee(){
@@ -67,6 +78,21 @@ public class RabbitMqConfig {
     @Bean
     public Binding bindingCreateAdvance(final Queue createAdvanceQueue , DirectExchange exchangeEmployee){
         return BindingBuilder.bind(createAdvanceQueue).to(exchangeEmployee).with(createAdvanceBindingKey);
+    }
+
+    @Bean
+    public Queue updateExpenseQueue(){
+        return new Queue(expenseUpdateQueue);
+    }
+
+    @Bean
+    public Queue updateAdvanceQueue(){
+        return new Queue(advanceUpdateQueue);
+    }
+
+    @Bean
+    public Queue updatePermissionQueue(){
+        return new Queue(permissionUpdateQueue);
     }
 
 

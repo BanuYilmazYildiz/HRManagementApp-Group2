@@ -30,4 +30,5 @@ public class CreatePermissionModel  implements Serializable {
     private EApprovalStatus approvalStatus=EApprovalStatus.PENDING_APPROVAL;
     private LocalDate replyDate;
     private String description;
+    private String company;
 }

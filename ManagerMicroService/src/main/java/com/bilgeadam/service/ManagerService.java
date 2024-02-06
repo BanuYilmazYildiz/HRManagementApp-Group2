@@ -1,19 +1,21 @@
 package com.bilgeadam.service;
 
 import com.bilgeadam.config.CloudinaryConfig;
-import com.bilgeadam.dto.request.CreateManagerRequestDto;
-import com.bilgeadam.dto.request.ImageUploadRequestDto;
-import com.bilgeadam.dto.request.UpdateRequestDto;
+import com.bilgeadam.dto.request.*;
+import com.bilgeadam.dto.response.AdvanceListManagerResponseDto;
+import com.bilgeadam.dto.response.ExpenseListManagerResponseDto;
 import com.bilgeadam.dto.response.ManagerFindByUserIdDetailResponseDto;
+import com.bilgeadam.dto.response.PermissionListManagerResponseDto;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.exception.ManagerManagerException;
 import com.bilgeadam.mapper.IAdvanceForManagerMapper;
 import com.bilgeadam.mapper.IExpenseForManagerMapper;
 import com.bilgeadam.mapper.IManagerMapper;
 import com.bilgeadam.mapper.IPermissionForManagerMapper;
-import com.bilgeadam.rabbitmq.model.CreateAdvanceModel;
-import com.bilgeadam.rabbitmq.model.CreateExpenseModel;
-import com.bilgeadam.rabbitmq.model.CreatePermissionModel;
+import com.bilgeadam.rabbitmq.model.*;
+import com.bilgeadam.rabbitmq.producer.UpdateAdvanceProducer;
+import com.bilgeadam.rabbitmq.producer.UpdateExpenseProducer;
+import com.bilgeadam.rabbitmq.producer.UpdatePermissionProducer;
 import com.bilgeadam.repository.IAdvanceForManagerRepository;
 import com.bilgeadam.repository.IExpenseForManagerRepository;
 import com.bilgeadam.repository.IManagerRepository;
@@ -29,10 +31,12 @@ import com.cloudinary.utils.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ManagerService extends ServiceManager<Manager,String> {
@@ -44,8 +48,11 @@ public class ManagerService extends ServiceManager<Manager,String> {
    private final IExpenseForManagerRepository expenseForManagerRepository;
    private final IPermissionForManagerRepository permissionForManagerRepository;
    private final IAdvanceForManagerRepository advanceForManagerRepository;
+   private final UpdateExpenseProducer updateExpenseProducer;
+   private final UpdateAdvanceProducer updateAdvanceProducer;
+   private final UpdatePermissionProducer updatePermissionProducer;
 
-    public ManagerService(IManagerRepository managerRepository, JwtTokenManager jwtTokenManager, CloudinaryConfig cloudinaryConfig, IExpenseForManagerRepository expenseForManagerRepository, IPermissionForManagerRepository permissionForManagerRepository, IAdvanceForManagerRepository advanceForManagerRepository) {
+    public ManagerService(IManagerRepository managerRepository, JwtTokenManager jwtTokenManager, CloudinaryConfig cloudinaryConfig, IExpenseForManagerRepository expenseForManagerRepository, IPermissionForManagerRepository permissionForManagerRepository, IAdvanceForManagerRepository advanceForManagerRepository, UpdateExpenseProducer updateExpenseProducer, UpdateAdvanceProducer updateAdvanceProducer, UpdatePermissionProducer updatePermissionProducer) {
         super(managerRepository);
         this.managerRepository = managerRepository;
         this.jwtTokenManager = jwtTokenManager;
@@ -53,6 +60,9 @@ public class ManagerService extends ServiceManager<Manager,String> {
         this.expenseForManagerRepository = expenseForManagerRepository;
         this.permissionForManagerRepository = permissionForManagerRepository;
         this.advanceForManagerRepository = advanceForManagerRepository;
+        this.updateExpenseProducer = updateExpenseProducer;
+        this.updateAdvanceProducer = updateAdvanceProducer;
+        this.updatePermissionProducer = updatePermissionProducer;
     }
 
 
@@ -158,5 +168,135 @@ public class ManagerService extends ServiceManager<Manager,String> {
         } catch (Exception e){
             throw new ManagerManagerException(ErrorType.ADVANCE_NOT_CREATED);
         }
+    }
+
+    public List<ExpenseListManagerResponseDto> findAllExpenseManager(String token) {
+        Optional<Long> userId = jwtTokenManager.getIdFromToken(token);
+        if (userId.isEmpty()) {
+            throw new ManagerManagerException(ErrorType.INVALID_TOKEN);
+        }
+        Optional<Manager> manager = managerRepository.findOptionalByUserId(userId.get());
+        if (manager.isEmpty()) {
+            throw new ManagerManagerException(ErrorType.MANAGER_NOT_FOUND);
+        }
+        return expenseForManagerRepository.findAllByCompany(manager.get().getCompany()).stream().map(a->{
+            return ExpenseListManagerResponseDto.builder()
+                    .id(a.getId())
+                    .name(a.getName())
+                    .surname(a.getSurname())
+                    .expenseAmount(a.getExpenseAmount())
+                    .expenseType(a.getExpenseType())
+                    .dateOfRequest(a.getDateOfRequest())
+                    .approvalStatus(a.getApprovalStatus())
+                    .currency(a.getCurrency())
+                    .userId(a.getUserId())
+                    .expenseId(a.getExpenseId())
+                    .dateOfResponse(a.getDateOfResponse())
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
+    public Boolean updateStatusExpense(UpdateExpenseStatusRequestDto dto) {
+        Optional<ExpenseForManager> expense = expenseForManagerRepository.findByExpenseId(dto.getExpenseId());
+        if (expense.isEmpty()){
+            throw new ManagerManagerException(ErrorType.BAD_REQUEST);
+        }
+        expense.get().setApprovalStatus(dto.getApprovalStatus());
+        expense.get().setDateOfResponse(LocalDate.now());
+        expenseForManagerRepository.save(expense.get());
+        updateExpenseProducer.updateExpense(UpdateExpenseStatusModel.builder()
+                        .approvalStatus(expense.get().getApprovalStatus())
+                        .dateOfResponse(expense.get().getDateOfResponse())
+                        .expenseId(expense.get().getExpenseId())
+                .build());
+        return true;
+    }
+
+
+    public Boolean updateStatusAdvance(UpdateAdvanceStatusRequestDto dto) {
+        Optional<AdvanceForManager> advance = advanceForManagerRepository.findByAdvanceId(dto.getAdvanceId());
+        if (advance.isEmpty()){
+            throw new ManagerManagerException(ErrorType.BAD_REQUEST);
+        }
+        advance.get().setApprovalStatus(dto.getApprovalStatus());
+        advance.get().setReplyDate(LocalDate.now());
+        advanceForManagerRepository.save(advance.get());
+        updateAdvanceProducer.updateAdvance(UpdateAdvanceStatusModel.builder()
+                .approvalStatus(advance.get().getApprovalStatus())
+                .replyDate(advance.get().getReplyDate())
+                .advanceId(advance.get().getAdvanceId())
+                .build());
+        return true;
+    }
+
+    public List<AdvanceListManagerResponseDto> findAllAdvanceManager(String token) {
+        Optional<Long> userId = jwtTokenManager.getIdFromToken(token);
+        if (userId.isEmpty()) {
+            throw new ManagerManagerException(ErrorType.INVALID_TOKEN);
+        }
+        Optional<Manager> manager = managerRepository.findOptionalByUserId(userId.get());
+        if (manager.isEmpty()) {
+            throw new ManagerManagerException(ErrorType.MANAGER_NOT_FOUND);
+        }
+        return advanceForManagerRepository.findAllByCompany(manager.get().getCompany()).stream().map(a->{
+            return AdvanceListManagerResponseDto.builder()
+                    .id(a.getId())
+                    .userId(a.getUserId())
+                    .name(a.getName())
+                    .surname(a.getSurname())
+                    .amountOfRequest(a.getAmountOfRequest())
+                    .dateOfRequest(a.getDateOfRequest())
+                    .approvalStatus(a.getApprovalStatus())
+                    .currency(a.getCurrency())
+                    .userId(a.getUserId())
+                    .advanceAmountWithSalary(a.getAdvanceAmountWithSalary())
+                    .advanceId(a.getAdvanceId())
+                    .replyDate(a.getReplyDate())
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
+    public List<PermissionListManagerResponseDto> findAllPermissionManager(String token) {
+        Optional<Long> userId = jwtTokenManager.getIdFromToken(token);
+        if (userId.isEmpty()) {
+            throw new ManagerManagerException(ErrorType.INVALID_TOKEN);
+        }
+        Optional<Manager> manager = managerRepository.findOptionalByUserId(userId.get());
+        if (manager.isEmpty()) {
+            throw new ManagerManagerException(ErrorType.MANAGER_NOT_FOUND);
+        }
+        return permissionForManagerRepository.findAllByCompany(manager.get().getCompany()).stream().map(a->{
+            return PermissionListManagerResponseDto.builder()
+                    .id(a.getId())
+                    .userId(a.getUserId())
+                    .name(a.getName())
+                    .surname(a.getSurname())
+                    .permissionId(a.getPermissionId())
+                    .permissionType(a.getPermissionType())
+                    .startDate(a.getStartDate())
+                    .endDate(a.getEndDate())
+                    .description(a.getDescription())
+                    .dateOfRequest(a.getDateOfRequest())
+                    .approvalStatus(a.getApprovalStatus())
+                    .userId(a.getUserId())
+                    .replyDate(a.getReplyDate())
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
+    public Boolean updateStatusPermission(UpdatePermissionStatusRequestDto dto) {
+        Optional<PermissionForManager> permission = permissionForManagerRepository.findByPermissionId(dto.getPermissionId());
+        if (permission.isEmpty()){
+            throw new ManagerManagerException(ErrorType.BAD_REQUEST);
+        }
+        permission.get().setApprovalStatus(dto.getApprovalStatus());
+        permission.get().setReplyDate(LocalDate.now());
+        permissionForManagerRepository.save(permission.get());
+        updatePermissionProducer.updatePermission(UpdatePermissionStatusModel.builder()
+                .approvalStatus(permission.get().getApprovalStatus())
+                .replyDate(permission.get().getReplyDate())
+                .permissionId(permission.get().getPermissionId())
+                .build());
+        return true;
     }
 }

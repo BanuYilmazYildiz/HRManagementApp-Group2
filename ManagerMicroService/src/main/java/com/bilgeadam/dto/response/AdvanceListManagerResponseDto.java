@@ -1,4 +1,4 @@
-package com.bilgeadam.repository.entity;
+package com.bilgeadam.dto.response;
 
 import com.bilgeadam.utility.enums.EAdvanceAmount;
 import com.bilgeadam.utility.enums.EApprovalStatus;
@@ -7,28 +7,23 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-
-public class AdvanceForManager {
-    @Id
+public class AdvanceListManagerResponseDto {
     private String id;
-    private String advanceId;
     private Long userId;
+    private String advanceId;
     private String name;
     private String surname;
     private EAdvanceAmount amountOfRequest;
-    @Builder.Default
-    private LocalDate dateOfRequest=LocalDate.now();
     private LocalDate replyDate;
-    @Builder.Default
-    private EApprovalStatus approvalStatus = EApprovalStatus.PENDING_APPROVAL;
-    private  String  advanceAmountWithSalary;
+    private EApprovalStatus approvalStatus;
+    private LocalDate dateOfRequest;
+    private  String advanceAmountWithSalary;
     private ECurrency currency;
-    private String company;
 }

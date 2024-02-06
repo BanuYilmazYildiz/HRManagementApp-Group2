@@ -34,4 +34,5 @@ public class PermissionForManager extends BaseEntity{
     private EApprovalStatus approvalStatus=EApprovalStatus.PENDING_APPROVAL;
     private LocalDate replyDate;
     private String description;
+    private String company;
 }

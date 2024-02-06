@@ -11,4 +11,9 @@ public class RestApi {
     public static final String CREATE = "/create";
     public static final String IMAGE_UPLOAD = "/image-upload";
     public static final String FIND_ALL_EXPENSE_FOR_MANAGER = "/find-all-expense-for-manager";
+    public static final String EXPENSE_APPROVE = "/expense-approve";
+    public static final String ADVANCE_APPROVE = "/advance-approve";
+    public static final String PERMISSION_APPROVE = "/permission-approve";
+    public static final String FIND_ALL_ADVANCE_FOR_MANAGER = "/find-all-advance-for-manager";
+    public static final String FIND_ALL_PERMISSION_FOR_MANAGER = "/find-all-permission-for-manager";
 }

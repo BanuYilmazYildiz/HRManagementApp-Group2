@@ -29,5 +29,6 @@ public class CreateExpenseModel implements Serializable {
     @Builder.Default
     private LocalDate dateOfRequest = LocalDate.now();
     private LocalDate dateOfResponse;
+    private String company;
 
 }
