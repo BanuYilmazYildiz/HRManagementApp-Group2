@@ -1,10 +1,22 @@
 package com.bilgeadam.controller;
 
+
 import com.bilgeadam.dto.request.*;
 import com.bilgeadam.dto.response.AdvanceListManagerResponseDto;
 import com.bilgeadam.dto.response.ExpenseListManagerResponseDto;
 import com.bilgeadam.dto.response.ManagerFindByUserIdDetailResponseDto;
 import com.bilgeadam.dto.response.PermissionListManagerResponseDto;
+
+import com.bilgeadam.dto.request.CreateCompanyRequestDto;
+import com.bilgeadam.dto.request.CreateManagerRequestDto;
+import com.bilgeadam.dto.request.ImageUploadRequestDto;
+import com.bilgeadam.dto.request.UpdateRequestDto;
+import com.bilgeadam.dto.response.ManagerFindByUserIdDetailResponseDto;
+import com.bilgeadam.dto.response.UpdateCompanyResponseDto;
+import com.bilgeadam.repository.entity.Company;
+import com.bilgeadam.repository.entity.ExpenseForManager;
+import com.bilgeadam.service.CompanyService;
+
 import com.bilgeadam.service.ManagerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +35,7 @@ import static com.bilgeadam.constants.RestApi.*;
 @CrossOrigin("*")
 public class ManagerController {
     private final ManagerService managerService;
+    private final CompanyService companyService;
 
     @PostMapping(CREATE)
     public ResponseEntity<Boolean> createManager(@RequestBody @Valid CreateManagerRequestDto dto){
@@ -82,5 +95,24 @@ public class ManagerController {
     public ResponseEntity<Boolean> updateStatusPermission(@RequestBody UpdatePermissionStatusRequestDto dto){
         return ResponseEntity.ok(managerService.updateStatusPermission(dto));
     }
-
+    @PostMapping(COMPANY_CREATE)
+    public ResponseEntity<Boolean> createCompany(@RequestBody @Valid CreateCompanyRequestDto dto) {
+        return ResponseEntity.ok(companyService.createCompany(dto));
+    }
+    @PutMapping(COMPANY_UPDATE)
+    public ResponseEntity<Company> updateCompany(@RequestBody @Valid UpdateCompanyResponseDto dto){
+        return ResponseEntity.ok(companyService.updateCompany(dto));
+    }
+    @DeleteMapping(COMPANY_DELETEBYID)
+    public ResponseEntity<Boolean> deleteCompany(@RequestParam Long id){
+        return ResponseEntity.ok(companyService.deleteCompany(id));
+    }
+    @GetMapping(FINDALL_COMPANY)
+    public ResponseEntity<List<Company>> findAll() {
+        return ResponseEntity.ok(companyService.findAll());
+    }
+    @GetMapping(COMPANY_DETAIL)
+    public ResponseEntity<Company> detailInfo(@RequestParam String id) {
+        return ResponseEntity.ok(companyService.getDetailInfo(id));
+    }
 }
