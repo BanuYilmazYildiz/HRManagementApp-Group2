@@ -30,4 +30,5 @@ public class CreateAdvanceModel implements Serializable {
     private EApprovalStatus approvalStatus = EApprovalStatus.PENDING_APPROVAL;
     private  String  advanceAmountWithSalary;
     private ECurrency currency;
+    private String company;
 }

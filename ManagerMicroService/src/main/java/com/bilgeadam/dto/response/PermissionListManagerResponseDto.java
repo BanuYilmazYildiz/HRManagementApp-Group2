@@ -1,4 +1,4 @@
-package com.bilgeadam.rabbitmq.model;
+package com.bilgeadam.dto.response;
 
 import com.bilgeadam.utility.enums.EApprovalStatus;
 import com.bilgeadam.utility.enums.EPermissionType;
@@ -7,28 +7,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CreatePermissionModel implements Serializable {
-
-    private String permissionId;
+public class PermissionListManagerResponseDto {
+    private String id;
     private Long userId;
+    private String permissionId;
     private String name;
     private String surname;
     private EPermissionType permissionType;
     private LocalDate startDate;
     private LocalDate endDate;
-    @Builder.Default
-    private LocalDate dateOfRequest = LocalDate.now();
-    private int days;
-    @Builder.Default
-    private EApprovalStatus approvalStatus=EApprovalStatus.PENDING_APPROVAL;
-    private LocalDate replyDate;
+    private EApprovalStatus approvalStatus;
     private String description;
-    private String company;
+    private LocalDate dateOfRequest;
+    private LocalDate replyDate;
 }

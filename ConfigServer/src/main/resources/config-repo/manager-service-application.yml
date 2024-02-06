@@ -27,3 +27,10 @@ rabbitmq:
   queue-expense-queue: expense-queue
   queue-permission-queue: permission-queue
   queue-advance-queue: advance-queue
+  exchange-manager: employee-manager
+  update-expense-key: update-expense-key
+  queue-update-expense-queue: update-expense-queue
+  update-advance-key: update-advance-key
+  queue-update-advance-queue: update-advance-queue
+  update-permission-key: update-permission-key
+  queue-update-permission-queue: update-permission-queue

@@ -1,5 +1,12 @@
 package com.bilgeadam.controller;
 
+
+import com.bilgeadam.dto.request.*;
+import com.bilgeadam.dto.response.AdvanceListManagerResponseDto;
+import com.bilgeadam.dto.response.ExpenseListManagerResponseDto;
+import com.bilgeadam.dto.response.ManagerFindByUserIdDetailResponseDto;
+import com.bilgeadam.dto.response.PermissionListManagerResponseDto;
+
 import com.bilgeadam.dto.request.CreateCompanyRequestDto;
 import com.bilgeadam.dto.request.CreateManagerRequestDto;
 import com.bilgeadam.dto.request.ImageUploadRequestDto;
@@ -9,6 +16,7 @@ import com.bilgeadam.dto.response.UpdateCompanyResponseDto;
 import com.bilgeadam.repository.entity.Company;
 import com.bilgeadam.repository.entity.ExpenseForManager;
 import com.bilgeadam.service.CompanyService;
+
 import com.bilgeadam.service.ManagerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Permission;
 import java.util.List;
 
 import static com.bilgeadam.constants.RestApi.*;
@@ -23,6 +32,7 @@ import static com.bilgeadam.constants.RestApi.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(MANAGER)
+@CrossOrigin("*")
 public class ManagerController {
     private final ManagerService managerService;
     private final CompanyService companyService;
@@ -51,8 +61,39 @@ public class ManagerController {
 
     @GetMapping(FIND_ALL_EXPENSE_FOR_MANAGER)
     @CrossOrigin("*")
-    public ResponseEntity<List<ExpenseForManager>> findAllExpense( ){
-        return ResponseEntity.ok(managerService.findAllExpense());
+    public ResponseEntity<List<ExpenseListManagerResponseDto>> findAllExpenseManager(String token){
+        return ResponseEntity.ok(managerService.findAllExpenseManager(token));
+    }
+
+
+    @PutMapping(EXPENSE_APPROVE)
+    @CrossOrigin("*")
+    public ResponseEntity<Boolean> updateStatusExpense(@RequestBody UpdateExpenseStatusRequestDto dto){
+        return ResponseEntity.ok(managerService.updateStatusExpense(dto));
+    }
+
+    @PutMapping(ADVANCE_APPROVE)
+    @CrossOrigin("*")
+    public ResponseEntity<Boolean> updateStatusAdvance(@RequestBody UpdateAdvanceStatusRequestDto dto){
+        return ResponseEntity.ok(managerService.updateStatusAdvance(dto));
+    }
+
+    @GetMapping(FIND_ALL_ADVANCE_FOR_MANAGER)
+    @CrossOrigin("*")
+    public ResponseEntity<List<AdvanceListManagerResponseDto>> findAllAdvanceManager(String token){
+        return ResponseEntity.ok(managerService.findAllAdvanceManager(token));
+    }
+
+    @GetMapping(FIND_ALL_PERMISSION_FOR_MANAGER)
+    @CrossOrigin("*")
+    public ResponseEntity<List<PermissionListManagerResponseDto>> findAllPermissionManager(String token){
+        return ResponseEntity.ok(managerService.findAllPermissionManager(token));
+    }
+
+    @PutMapping(PERMISSION_APPROVE)
+    @CrossOrigin("*")
+    public ResponseEntity<Boolean> updateStatusPermission(@RequestBody UpdatePermissionStatusRequestDto dto){
+        return ResponseEntity.ok(managerService.updateStatusPermission(dto));
     }
     @PostMapping(COMPANY_CREATE)
     public ResponseEntity<Boolean> createCompany(@RequestBody @Valid CreateCompanyRequestDto dto) {

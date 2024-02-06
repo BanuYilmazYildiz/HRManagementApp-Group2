@@ -9,9 +9,7 @@ import com.bilgeadam.mapper.IAdvanceMapper;
 import com.bilgeadam.mapper.IEmployeeMapper;
 import com.bilgeadam.mapper.IExpenseMapper;
 import com.bilgeadam.mapper.IPermissionMapper;
-import com.bilgeadam.rabbitmq.model.CreateAdvanceModel;
-import com.bilgeadam.rabbitmq.model.CreateExpenseModel;
-import com.bilgeadam.rabbitmq.model.CreatePermissionModel;
+import com.bilgeadam.rabbitmq.model.*;
 import com.bilgeadam.rabbitmq.producer.AdvanceProducer;
 import com.bilgeadam.rabbitmq.producer.ExpenseProducer;
 import com.bilgeadam.rabbitmq.producer.PermissionProducer;
@@ -165,6 +163,7 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         CreatePermissionModel createPermissionModel = IPermissionMapper.INSTANCE.fromPermissionToPermissionModel(permission);
         createPermissionModel.setName(employee.get().getName());
         createPermissionModel.setSurname(employee.get().getSurname());
+        createPermissionModel.setCompany(employee.get().getCompany());
         permissionProducer.createPermission(createPermissionModel);
 
         return true;
@@ -189,6 +188,7 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         CreateExpenseModel createExpenseModel = IExpenseMapper.INSTANCE.fromEmployeeToExpenseModel(expense);
         createExpenseModel.setName(employee.get().getName());
         createExpenseModel.setSurname(employee.get().getSurname());
+        createExpenseModel.setCompany(employee.get().getCompany());
         expenseProducer.createExpense(createExpenseModel);
 
         return true;
@@ -230,8 +230,8 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         CreateAdvanceModel createAdvanceModel = IAdvanceMapper.INSTANCE.fromAdvanceToAdvanceModel(advance);
         createAdvanceModel.setName(employee.get().getName());
         createAdvanceModel.setSurname(employee.get().getSurname());
+        createAdvanceModel.setCompany(employee.get().getCompany());
         advanceProducer.createAdvance(createAdvanceModel);
-
         return true;
     }
 
@@ -318,5 +318,35 @@ public class EmployeeService extends ServiceManager<Employee,String> {
         return employeeRepository.findAllByCompany(company).stream().map(x->{
             return FindAllEmployeeResponseDto.builder().userId(x.getUserId()).photo(x.getPhoto()).name(x.getName()).surname(x.getSurname()).email(x.getEmail()).address(x.getAddress()).profession(x.getProfession()).department(x.getDepartment()).build();
         }).collect(Collectors.toList());
+    }
+
+    public void updateExpense(UpdateExpenseStatusModel model) {
+        Optional<Expense> expense = expenseRepository.findById(model.getExpenseId());
+        if (expense.isEmpty()){
+            throw new EmployeeManagerException(ErrorType.BAD_REQUEST);
+        }
+        expense.get().setDateOfResponse(model.getDateOfResponse());
+        expense.get().setApprovalStatus(model.getApprovalStatus());
+        expenseRepository.save(expense.get());
+    }
+
+    public void updateAdvance(UpdateAdvanceStatusModel model) {
+        Optional<Advance> advance = advanceRepository.findById(model.getAdvanceId());
+        if (advance.isEmpty()){
+            throw new EmployeeManagerException(ErrorType.BAD_REQUEST);
+        }
+        advance.get().setReplyDate(model.getReplyDate());
+        advance.get().setApprovalStatus(model.getApprovalStatus());
+        advanceRepository.save(advance.get());
+    }
+
+    public void updatePermission(UpdatePermissionStatusModel model) {
+        Optional<Permission> permission = permissionRepository.findById(model.getPermissionId());
+        if (permission.isEmpty()){
+            throw new EmployeeManagerException(ErrorType.BAD_REQUEST);
+        }
+        permission.get().setReplyDate(model.getReplyDate());
+        permission.get().setApprovalStatus(model.getApprovalStatus());
+        permissionRepository.save(permission.get());
     }
 }

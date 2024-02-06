@@ -37,3 +37,6 @@ rabbitmq:
   password-permission-key: permission-key
   queue-advance-queue: advance-queue
   password-advance-key: advance-key
+  queue-update-expense-queue: update-expense-queue
+  queue-update-advance-queue: update-advance-queue
+  queue-update-permission-queue: update-permission-queue
