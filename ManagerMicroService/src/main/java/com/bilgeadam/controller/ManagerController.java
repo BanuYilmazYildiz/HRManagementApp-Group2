@@ -2,17 +2,13 @@ package com.bilgeadam.controller;
 
 
 import com.bilgeadam.dto.request.*;
-import com.bilgeadam.dto.response.AdvanceListManagerResponseDto;
-import com.bilgeadam.dto.response.ExpenseListManagerResponseDto;
-import com.bilgeadam.dto.response.ManagerFindByUserIdDetailResponseDto;
-import com.bilgeadam.dto.response.PermissionListManagerResponseDto;
+import com.bilgeadam.dto.response.*;
 
 import com.bilgeadam.dto.request.CreateCompanyRequestDto;
 import com.bilgeadam.dto.request.CreateManagerRequestDto;
 import com.bilgeadam.dto.request.ImageUploadRequestDto;
 import com.bilgeadam.dto.request.UpdateRequestDto;
 import com.bilgeadam.dto.response.ManagerFindByUserIdDetailResponseDto;
-import com.bilgeadam.dto.response.UpdateCompanyResponseDto;
 import com.bilgeadam.repository.entity.Company;
 import com.bilgeadam.repository.entity.ExpenseForManager;
 import com.bilgeadam.service.CompanyService;
@@ -114,5 +110,12 @@ public class ManagerController {
     @GetMapping(COMPANY_DETAIL)
     public ResponseEntity<Company> detailInfo(@RequestParam String id) {
         return ResponseEntity.ok(companyService.getDetailInfo(id));
+    }
+
+
+    @GetMapping(FIND_ALL_MANAGER)
+    @CrossOrigin("*")
+    public ResponseEntity<List<ManagerListResponseDto>> findAllManager(){
+        return ResponseEntity.ok(managerService.findAllManager());
     }
 }

@@ -34,9 +34,9 @@ public class RegisterRequestDto {
     @Size(min = 11, max = 11, message = "TC Kimlik Numarası 11 karakter uzunluğunda olmalıdır")
     @Column(unique = true, length = 11)
     private String tcNo;
-    @NotNull(message = "İşe başlama tarihi boş olamaz")
-    private LocalDate startDateToWork;
-    private LocalDate resignationDate; //işten çıkış tarihi
+    @Builder.Default
+    private LocalDate startDateToWork=LocalDate.now();
+    private LocalDate resignationDate;
     @NotEmpty(message = "Meslek ismi boş olamaz")
     private String profession; //meslek
     @NotEmpty(message = "Departman ismi boş olamaz")

@@ -2,10 +2,7 @@ package com.bilgeadam.service;
 
 import com.bilgeadam.config.CloudinaryConfig;
 import com.bilgeadam.dto.request.*;
-import com.bilgeadam.dto.response.AdvanceListManagerResponseDto;
-import com.bilgeadam.dto.response.ExpenseListManagerResponseDto;
-import com.bilgeadam.dto.response.ManagerFindByUserIdDetailResponseDto;
-import com.bilgeadam.dto.response.PermissionListManagerResponseDto;
+import com.bilgeadam.dto.response.*;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.exception.ManagerManagerException;
 import com.bilgeadam.mapper.IAdvanceForManagerMapper;
@@ -26,6 +23,7 @@ import com.bilgeadam.repository.entity.Manager;
 import com.bilgeadam.repository.entity.PermissionForManager;
 import com.bilgeadam.utility.JwtTokenManager;
 import com.bilgeadam.utility.ServiceManager;
+import com.bilgeadam.utility.enums.ERole;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.stereotype.Service;
@@ -70,7 +68,6 @@ public class ManagerService extends ServiceManager<Manager,String> {
         try {
           //  save(IManagerMapper.INSTANCE.fromCreateRequestToManager(dto));
             Manager manager = IManagerMapper.INSTANCE.fromCreateRequestToManager(dto);
-            manager.setEmail(dto.getName()+"." +dto.getSurname()+"@"+dto.getCompany()+".com");
             save(manager);
             return true;
         } catch (Exception e){
@@ -298,5 +295,21 @@ public class ManagerService extends ServiceManager<Manager,String> {
                 .permissionId(permission.get().getPermissionId())
                 .build());
         return true;
+    }
+
+    public List<ManagerListResponseDto> findAllManager() {
+        return managerRepository.findAllByRole(ERole.MANAGER).stream().map(x->{
+            return ManagerListResponseDto.builder()
+                    .userId(x.getUserId())
+                    .name(x.getName())
+                    .surname(x.getSurname())
+                    .email(x.getEmail())
+                    .company(x.getCompany())
+                    .address(x.getAddress())
+                    .photo(x.getPhoto())
+                    .profession(x.getProfession())
+                    .department(x.getDepartment())
+                    .build();
+        }).collect(Collectors.toList());
     }
 }

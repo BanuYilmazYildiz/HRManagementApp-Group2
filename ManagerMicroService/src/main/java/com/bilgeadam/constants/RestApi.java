@@ -17,6 +17,7 @@ public class RestApi {
     public static final String PERMISSION_APPROVE = "/permission-approve";
     public static final String FIND_ALL_ADVANCE_FOR_MANAGER = "/find-all-advance-for-manager";
     public static final String FIND_ALL_PERMISSION_FOR_MANAGER = "/find-all-permission-for-manager";
+    public static final String FIND_ALL_MANAGER = "/find-all-manager";
 
     //-------------------------------------------------------------------------------------------
     public static final String COMPANY_DETAIL = "/company-detail";
