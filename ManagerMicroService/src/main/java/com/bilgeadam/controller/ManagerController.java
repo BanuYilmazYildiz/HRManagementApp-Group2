@@ -23,7 +23,7 @@ public class ManagerController {
     private final ManagerService managerService;
 
     @PostMapping(CREATE)
-    public ResponseEntity<Boolean> createManager(@RequestBody CreateManagerRequestDto dto){
+    public ResponseEntity<Boolean> createManager(@RequestBody @Valid CreateManagerRequestDto dto){
         return ResponseEntity.ok(managerService.createManager(dto));
     }
     @GetMapping(FINDBYID2)
