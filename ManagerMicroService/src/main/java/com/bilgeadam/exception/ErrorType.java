@@ -21,7 +21,10 @@ public enum ErrorType {
     MANAGER_NOT_CREATED(4118,"Manager olusturulamadi",HttpStatus.BAD_REQUEST),
     EXPENSE_NOT_CREATED(4119,"Expense olusturulamadi",HttpStatus.BAD_REQUEST),
     PERMISSION_NOT_CREATED(4120,"Permission olusturulamadi",HttpStatus.BAD_REQUEST),
-    ADVANCE_NOT_CREATED(4121,"Advance olusturulamadi",HttpStatus.BAD_REQUEST);
+    ADVANCE_NOT_CREATED(4121,"Advance olusturulamadi",HttpStatus.BAD_REQUEST),
+    COMPANY_NOT_CREATED(4001,"Company olusturulamadi",HttpStatus.BAD_REQUEST),
+    COMPANY_ALREADY_EXIST(4002,"Company adi bulunmakta",HttpStatus.BAD_REQUEST),
+    COMPANY_NOT_FOUND(4006,"Company bulunamadi.",HttpStatus.BAD_REQUEST);
 
 
     private int code;
