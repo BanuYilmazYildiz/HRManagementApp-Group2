@@ -69,27 +69,25 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
     return loginResponseDto;
     }
 
+    public String convertEnglish(String word){
+        String lowWord = word.toLowerCase();
+        String convertedWord = lowWord.replaceAll("ı","i")
+                .replaceAll("ğ","g")
+                .replaceAll("ü","u")
+                .replaceAll("ş","s")
+                .replaceAll("ö","o")
+                .replaceAll("ç","c");
+        return convertedWord;
+    }
+
     public RegisterResponseDto register(RegisterRequestDto dto) {
         UserProfile userProfile = IUserMapper.INSTANCE.fromUserRegisterRequestDtoToUser(dto);
-//        String email = (dto.getName().replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
-//                .replaceAll("ı", "i")
-//                .replaceAll("İ", "I")
-//                .toLowerCase()+"."
-//                +dto.getSurname().replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
-//                .replaceAll("ı", "i")
-//                .replaceAll("İ", "I")
-//                .toLowerCase()
-//                +"@"+
-//                dto.getCompany().replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
-//                        .replaceAll("ı", "i")
-//                        .replaceAll("İ", "I")
-//                        .toLowerCase()
-//                +".com");
-        String email = (StringUtils.stripAccents(dto.getName()).toLowerCase()+"."
-                +StringUtils.stripAccents(dto.getSurname()).toLowerCase()
-                +"@"+
-                StringUtils.stripAccents(dto.getCompany()).toLowerCase()
-                +".com");
+
+        String email = convertEnglish(dto.getName())+"."
+                +convertEnglish(dto.getSurname())
+                +"@"
+                +convertEnglish(dto.getCompany())
+                +".com";
 
         userProfile.setEmail(email);
         userProfile.setActivationCode(CodeGenerator.generateCode());
