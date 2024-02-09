@@ -118,4 +118,10 @@ public class ManagerController {
     public ResponseEntity<List<ManagerListResponseDto>> findAllManager(){
         return ResponseEntity.ok(managerService.findAllManager());
     }
+
+    @GetMapping(FIND_ALL_ADMIN)
+    @CrossOrigin("*")
+    public ResponseEntity<List<AdminListResponseDto>> findAllAdmin(){
+        return ResponseEntity.ok(managerService.findAllAdmin());
+    }
 }

@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Data
 @Builder
 public class CreateCompanyRequestDto {
+    private String token;
     private String companyName;
     private String mersisNumber;//şirketlerin ticaret sicil kayıtlarının dijital ortamda tutulması
     @Pattern(regexp = "\\d+", message = "Telefon numarası sadece sayısal değerler içermelidir")

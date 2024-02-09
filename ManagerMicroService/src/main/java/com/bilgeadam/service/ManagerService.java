@@ -312,4 +312,17 @@ public class ManagerService extends ServiceManager<Manager,String> {
                     .build();
         }).collect(Collectors.toList());
     }
+
+    public List<AdminListResponseDto> findAllAdmin() {
+        return managerRepository.findAllByRole(ERole.ADMIN).stream().map(x->{
+            return AdminListResponseDto.builder()
+                    .userId(x.getUserId())
+                    .name(x.getName())
+                    .surname(x.getSurname())
+                    .email(x.getEmail())
+                    .address(x.getAddress())
+                    .photo(x.getPhoto())
+                    .build();
+        }).collect(Collectors.toList());
+    }
 }
